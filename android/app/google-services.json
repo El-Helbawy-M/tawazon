@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "335877243346",
-    "project_id": "e-commerce-test-app-af433",
-    "storage_bucket": "e-commerce-test-app-af433.firebasestorage.app"
+    "project_number": "42243577128",
+    "project_id": "tawazon-69d9b",
+    "storage_bucket": "tawazon-69d9b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:335877243346:android:802be0cb30ab05f993880b",
+        "mobilesdk_app_id": "1:42243577128:android:5385c7a65f648b1c39ec1d",
         "android_client_info": {
           "package_name": "com.academy.commerce"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAblFrrURyMBsJqinTsqJdwYUOlAFlyCBM"
+          "current_key": "AIzaSyCZ1kLczIwct1ZwRcIHBa4Wf7j3hGZguOQ"
         }
       ],
       "services": {

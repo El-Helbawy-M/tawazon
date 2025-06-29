@@ -7,7 +7,7 @@ Widget drawSvgIcon(String iconName, {double? width, double? height, Color? iconC
         width: width ?? 24,
         height: height ?? 24,
         child: SvgPicture.asset(
-          "assets/svgs/$iconName.svg",
+          "assets/icons/$iconName.svg",
           color: iconColor,
         ),
       ),

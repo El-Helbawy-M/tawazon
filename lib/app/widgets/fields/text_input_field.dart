@@ -68,7 +68,7 @@ class _TextInputFieldState extends State<TextInputField> {
       return GestureDetector(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          child: drawSvgIcon(showText ? "eye_hide" : "eye"),
+          child: Icon(showText ? Icons.visibility_off_outlined : Icons.visibility, color: Colors.grey[400]),
         ),
         onTap: () {
           setState(() {
@@ -163,7 +163,7 @@ class _TextInputFieldState extends State<TextInputField> {
 
   OutlineInputBorder _mapBorder({required Color borderColor}) {
     return OutlineInputBorder(
-      borderRadius: widget.borderRadius??BorderRadius.circular(50),
+      borderRadius: widget.borderRadius??BorderRadius.circular(8),
       borderSide: BorderSide(color: borderColor),
     );
   }

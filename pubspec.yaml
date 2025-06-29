@@ -34,21 +34,46 @@ dependencies:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-  flutter_bloc: ^8.1.6
-  intl: ^0.19.0
-  image_picker: ^1.1.2
-  file_picker: ^8.1.4
+  # Use with the CupertinoIcons class for iOS style icons
+
+  #==================================== Network
   dio: ^5.7.0
-  video_player: ^2.9.2
-  qr_code_scanner_plus: ^2.0.6
-  open_file: ^3.5.10
-  flutter_svg: ^2.0.16
-  permission_handler: ^11.3.1
   url_launcher: ^6.3.1
+  either_dart: ^1.0.0
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  #==================================== Firebase
+  firebase_core: ^3.14.0
+  firebase_auth: ^5.6.0
+  cloud_firestore: ^5.6.9
+  #==================================== Device Resources
+  hive_flutter: ^1.1.0
+  open_file: ^3.3.2
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.5
+  image_picker: ^1.1.2
+  mime: ^2.0.0
+  #==================================== Security
   encrypt: ^5.0.3
+  #==================================== UI
+  intl: ^0.19.0
   mocktail: ^1.0.4
+  file_picker: ^8.1.4
+  flutter_bloc: ^9.1.0
+  video_player: ^2.9.2
+  flutter_html: ^3.0.0
+  flutter_svg: ^2.0.16
+  hydrated_bloc: ^10.0.0
+  country_picker: ^2.0.27
+  carousel_slider: ^5.0.0
+  cupertino_icons: ^1.0.8
+  currency_picker: ^2.0.21
+  shimmer_animation: ^2.2.2
+  country_code_picker: ^3.3.0
+  qr_code_scanner_plus: ^2.0.10+1
+  cached_network_image: ^3.4.1
+  calendar_date_picker2: ^2.0.0
+  flutter_staggered_grid_view: ^0.7.0
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +85,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  logger: ^2.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +102,8 @@ flutter:
   assets:
    - assets/lang/ar.json
    - assets/lang/en.json
+   - assets/images/
+   - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

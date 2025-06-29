@@ -34,17 +34,17 @@ class GlobalTranslations {
     _localizedValues = json.decode(jsonContent);
     return;
   }
-  static final GlobalTranslations translator = new GlobalTranslations._internal();
+
   GlobalTranslations._internal();
 }
-
+final GlobalTranslations translator = GlobalTranslations._internal();
 class AppLocalizationsDelegate extends LocalizationsDelegate<GlobalTranslations> {
   @override
   bool isSupported(Locale locale) => ['en', 'ar'].contains(locale.languageCode);
 
   @override
   Future<GlobalTranslations> load(Locale locale) async {
-    return await GlobalTranslations.translator..initTranslation(locale.languageCode,false);
+    return translator..initTranslation(locale.languageCode,false);
   }
 
   @override
