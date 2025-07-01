@@ -2,7 +2,8 @@ import 'package:base/app/widgets/cashed_network_image.dart';
 import 'package:base/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 
-import 'configurations/app_persistence_data_keys.dart';
+import 'app/bloc/user_cubit.dart';
+import 'config/app_persistence_data_keys.dart';
 import 'navigation/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,6 +38,8 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(seconds: 3));
     bool? isLoggedIn = SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.isLogin);
     if (isLoggedIn == true) {
+      String userId = SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.token);
+      UserCubit.instance.getUseData(userId);
       Navigator.pushReplacementNamed(context,AppRoutes.home);
     } else {
       Navigator.pushReplacementNamed(context,AppRoutes.login);

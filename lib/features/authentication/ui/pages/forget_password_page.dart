@@ -1,8 +1,8 @@
 import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
 import 'package:base/app/widgets/cashed_network_image.dart';
 import 'package:base/app/widgets/fields/text_input_field.dart';
-import 'package:base/configurations/app_events.dart';
-import 'package:base/configurations/app_states.dart';
+import 'package:base/config/app_events.dart';
+import 'package:base/config/app_states.dart';
 import 'package:base/features/authentication/ui/bloc/forget_password_bloc.dart';
 import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';

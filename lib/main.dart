@@ -1,5 +1,6 @@
 import 'package:base/app/bloc/settings_cubit.dart';
-import 'package:base/configurations/app_states.dart';
+import 'package:base/app/bloc/user_cubit.dart';
+import 'package:base/config/app_states.dart';
 import 'package:base/handlers/security/AESEncryptor.dart';
 import 'package:base/handlers/shared_handler.dart';
 import 'package:base/navigation/app_routes.dart';
@@ -27,8 +28,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SettingsCubit.instance,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SettingsCubit.instance),
+        BlocProvider(create: (context) => UserCubit.instance),
+      ],
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {
           return MaterialApp(

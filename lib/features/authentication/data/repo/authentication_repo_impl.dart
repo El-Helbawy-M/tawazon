@@ -1,11 +1,10 @@
-import 'dart:developer';
 
-import 'package:base/configurations/firestore_tables.dart';
+import 'package:base/config/firestore_tables.dart';
 import 'package:base/features/authentication/core/entities/UserData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dartz/dartz.dart';
-import 'package:base/core/error/failures.dart';
+import '../../../../config/app_errors.dart';
 import '../../core/repo/authentication_repo_interface.dart';
 
 class AuthenticationRepoImpl extends AuthenticationRepoInterface {
@@ -34,7 +33,7 @@ class AuthenticationRepoImpl extends AuthenticationRepoInterface {
       if (credential.user != null && !credential.user!.emailVerified) {
         // Send verification email
         await credential.user!.sendEmailVerification();
-        return const Left( AuthFailure(
+        return Left( AuthFailure(
           message: 'Please verify your email. A verification email has been sent.',
           code: 'email-not-verified'
         ),);

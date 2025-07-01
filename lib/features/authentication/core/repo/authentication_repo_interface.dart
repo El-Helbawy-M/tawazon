@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../core/error/failures.dart';
+import '../../../../config/app_errors.dart';
 import '../entities/UserData.dart';
 
 abstract class AuthenticationRepoInterface {

@@ -60,4 +60,8 @@ class ValidationFailure extends Failure {
 class UnknownFailure extends Failure {
   UnknownFailure(super.message);
 }
+class AuthFailure extends Failure {
+  String? code;
+  AuthFailure({required String message,this.code}) : super(message);
+}
 

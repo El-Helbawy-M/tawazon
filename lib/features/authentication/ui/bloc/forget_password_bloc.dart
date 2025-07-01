@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import '../../../../configurations/app_events.dart';
-import '../../../../configurations/app_states.dart';
+import '../../../../config/app_events.dart';
+import '../../../../config/app_states.dart';
 import '../../../../core/validations.dart';
 import '../../core/repo/authentication_repo_interface.dart';
 

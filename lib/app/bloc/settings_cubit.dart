@@ -1,4 +1,4 @@
-import 'package:base/configurations/app_states.dart';
+import 'package:base/config/app_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
