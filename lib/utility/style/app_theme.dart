@@ -9,8 +9,8 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.backgroundColor,
 
   appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.primaryColor,
-    foregroundColor: Colors.white,
+    backgroundColor: Colors.white,
+    foregroundColor: Colors.black,
     elevation: 0,
   ),
 

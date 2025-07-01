@@ -3,6 +3,7 @@ abstract class AppStates {}
 class InitialState extends AppStates {}
 class LoadingState extends AppStates {}
 class SuccessState extends AppStates {}
+class ReconnectedState extends AppStates {}
 class LoadedState extends AppStates {
   final dynamic data;
   LoadedState(this.data);

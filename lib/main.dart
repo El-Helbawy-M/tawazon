@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/home/ui/pages/complete_profile_page.dart';
 import 'firebase_options.dart';
 import 'utility/style/app_theme.dart';
 import 'navigation/route_generator.dart';
@@ -39,8 +40,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: SettingsCubit.instance.isDarkMode ? ThemeData.dark() : lightTheme,
             locale: SettingsCubit.instance.locale,
-            onGenerateRoute: generateRoute,
-            initialRoute: AppRoutes.splash,
+            // onGenerateRoute: generateRoute,
+            // initialRoute: AppRoutes.splash,
+            home: CompleteProfilePage(),
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),
