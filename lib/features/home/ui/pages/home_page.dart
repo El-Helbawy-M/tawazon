@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:base/app/bloc/user_cubit.dart';
 import 'package:base/config/app_states.dart';
+import 'package:base/features/home/ui/widgets/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../navigation/app_routes.dart';
 import '../widgets/complete_profile_alert.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,10 +15,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MenuDrawer(),
+
       appBar: AppBar(
-        leading: SizedBox(),
-        leadingWidth: 0,
-        title: const Text('Home',style: TextStyle(color: Colors.black)),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(icon: const Icon(Icons.menu),onPressed: (){
+              Scaffold.of(context).openDrawer();
+            },);
+          }
+        ),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
       ),
@@ -47,7 +55,7 @@ class HomePage extends StatelessWidget {
                 child: AnimatedProfileReminderBanner(
                   isVisible: !UserCubit.instance.hasCompletedProfile,
                   onCompleteProfile: () {
-                    // Navigate to profile screen or open modal
+                    Navigator.pushNamed(context,AppRoutes.completeProfile);
                   },
                 ),
               );

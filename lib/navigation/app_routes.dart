@@ -12,4 +12,5 @@ abstract class AppRoutes {
   //======================================================= Home Routes
   //=======================================================
   static const String home = "/home";
+  static const String completeProfile = "/complete_profile";
 }

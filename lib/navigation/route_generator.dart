@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../features/authentication/ui/bloc/login_bloc.dart';
+import '../features/home/ui/pages/complete_profile_page.dart';
 import '../splash.dart';
 import 'app_routes.dart';
 
@@ -52,6 +53,8 @@ Route generateRoute(settings) {
     //===============================================
     case AppRoutes.home:
       return _createRoute(const HomePage());
+    case AppRoutes.completeProfile:
+      return _createRoute(const CompleteProfilePage());
     default:
       return _createRoute(const SizedBox());
   }

@@ -3,16 +3,14 @@ import 'package:base/app/bloc/user_cubit.dart';
 import 'package:base/config/app_states.dart';
 import 'package:base/handlers/security/AESEncryptor.dart';
 import 'package:base/handlers/shared_handler.dart';
-import 'package:base/navigation/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'features/home/ui/pages/complete_profile_page.dart';
 import 'firebase_options.dart';
-import 'utility/style/app_theme.dart';
+import 'navigation/app_routes.dart';
 import 'navigation/route_generator.dart';
+import 'utility/style/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,9 +38,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: SettingsCubit.instance.isDarkMode ? ThemeData.dark() : lightTheme,
             locale: SettingsCubit.instance.locale,
-            // onGenerateRoute: generateRoute,
-            // initialRoute: AppRoutes.splash,
-            home: CompleteProfilePage(),
+            onGenerateRoute: generateRoute,
+            initialRoute: AppRoutes.splash,
+            // home: ,
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),
