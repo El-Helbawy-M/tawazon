@@ -50,12 +50,13 @@ class _MultiSelectInputFieldState extends State<MultiSelectInputField> {
     return Column(
       children: [
         if (widget.label != null)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              widget.label!,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
+          Row(
+            children: [
+              Text(
+                widget.label!,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+            ],
           ),
         if (widget.label != null) const SizedBox(height: 8),
         GestureDetector(

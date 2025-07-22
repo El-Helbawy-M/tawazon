@@ -8,6 +8,9 @@ import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../config/app_translation_keys.dart';
+import '../../../../handlers/translation_handler.dart';
+
 /// A widget representing the login page of the application.
 class ForgetPasswordPage extends StatelessWidget {
   const ForgetPasswordPage({super.key});
@@ -25,7 +28,7 @@ class ForgetPasswordPage extends StatelessWidget {
             },
           ),
           titleSpacing: 0,
-          title: const Text("Forget Password", style: TextStyle(color: Colors.black)),
+          title: Text(translator.word(TranslationKeys.forgotPassword), style: TextStyle(color: Colors.black)),
         ),
         body: CancelKeyboardGesture(
       child: SingleChildScrollView(
@@ -58,8 +61,8 @@ class ForgetPasswordPage extends StatelessWidget {
                 CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
                 const SizedBox(height: 36),
                 TextInputField(
-                  labelText: "Email",
-                  hintText: "Enter your email",
+                  labelText: translator.word(TranslationKeys.email),
+                  hintText: translator.word(TranslationKeys.emailFieldHint),
                   keyboardType: TextInputType.emailAddress,
                   controller: bloc.emailController,
                   hasError: bloc.emailError.isNotEmpty,
@@ -75,7 +78,7 @@ class ForgetPasswordPage extends StatelessWidget {
                         : () {
                             bloc.add(ClickEvent());
                           },
-                    child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : const Text("Submit"),
+                    child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : Text(translator.word(TranslationKeys.submit)),
                   ),
                 ),
               ],

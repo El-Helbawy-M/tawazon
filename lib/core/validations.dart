@@ -2,17 +2,24 @@ import '../handlers/translation_handler.dart';
 
 mixin Validations {
   String isValidEmail(String email) {
-    if (email.isEmpty) {
-      return "Email is required";
+    // Check if empty
+    if (email.trim().isEmpty) {
+      return "البريد الإلكتروني مطلوب";
     }
-    // More comprehensive email regex pattern
-    final emailRegex = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-      caseSensitive: false,
-    );
-    if (!emailRegex.hasMatch(email)) {
-      return "Please enter a valid email address";
+
+    // Basic email pattern
+    final basicEmailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!basicEmailRegex.hasMatch(email)) {
+      return "صيغة البريد الإلكتروني غير صحيحة";
     }
+
+    // Check Mansoura University student domain
+    const mansouraDomain = "@std.mans.edu.eg";
+    if (!email.toLowerCase().endsWith(mansouraDomain)) {
+      return "يجب أن يكون البريد الإلكتروني للطالب على النطاق $mansouraDomain";
+    }
+
+    // No errors
     return "";
   }
 
@@ -126,6 +133,19 @@ mixin Validations {
     // Check if all characters are numbers
     if (!RegExp(r'^[0-9]+$').hasMatch(cleanNumber)) {
       return "Civil ID number must contain only digits";
+    }
+    return "";
+  }
+
+  String isValidAge(String age) {
+    if (age.isEmpty) {
+      return "Age is required";
+    }
+    if (int.tryParse(age) == null) {
+      return "Age must be a valid number";
+      }
+    if (int.parse(age) < 0) {
+      return "Age cannot be negative";
     }
     return "";
   }

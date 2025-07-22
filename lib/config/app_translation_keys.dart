@@ -1,4 +1,43 @@
 abstract class TranslationKeys {
-  //todo: Add more translation keys
   static const String settings = 'settings';
+  static const String login = 'login';
+  static const String register = 'register';
+  static const String signUp = 'sign_up';
+  static const String signIn = 'sign_in';
+  static const String forgotPassword = 'forgot_password';
+  static const String email = 'email';
+  static const String emailFieldHint = 'email_field_hint';
+  static const String password = 'password';
+  static const String passwordFieldHint = 'password_field_hint';
+  static const String confirmPassword = 'confirm_password';
+  static const String confirmPasswordFieldHint = 'confirm_password_field_hint';
+  static const String completeProfile = 'complete_profile';
+  static const String completeProfileHint = 'complete_profile_hint';
+  static const String welcome = 'welcome';
+  static const String about = 'about';
+  static const String doNotHaveAnAccount = "don't_have_an_account";
+  static const String haveAnAccount = 'have_an_account';
+  static const String submit = 'submit';
+  static const String next = 'next';
+  static const String back = 'back';
+  static const String personalData = 'personal_data';
+  static const String somethingWrong = 'something_wrong';
+  static const String faculity = 'faculity';
+  static const String age = 'age';
+  static const String gender = 'gender';
+  static const String academicTeam = 'academic_team';
+  static const String academicGrade = 'academic_grade';
+  static const String placeOfResidence = 'place_of_residence';
+  static const String hasVisitedDoctorOnce = 'has_visited_doctor_once';
+  static const String choose = 'choose';
+  static const String enter = 'enter';
+  static const String male = 'male';
+  static const String female = 'female';
+  static const String lastCumulativeGpa = 'last_cumulative_gpa';
+  static const String thisFieldIsRequired = 'this_field_is_required';
+  static const String city = 'city';
+  static const String countrySide = 'country_side';
+  static const String yes = 'yes';
+  static const String no = 'no';
+  static const String completeProfileSuccessMessage = 'complete_profile_success_message';
 }

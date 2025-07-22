@@ -1,7 +1,11 @@
 import 'package:base/app/bloc/user_cubit.dart';
+import 'package:base/config/app_states.dart';
+import 'package:base/handlers/translation_handler.dart';
 import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../config/app_translation_keys.dart';
 import '../../../../navigation/app_routes.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -13,11 +17,15 @@ class MenuDrawer extends StatelessWidget {
 
     return Drawer(
       child: SafeArea(
+        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Drawer Header
             DrawerHeader(
+              padding: EdgeInsets.zero,
+              margin: EdgeInsets.zero,
+
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -43,22 +51,25 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Welcome,",
-                    style: context.theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onPrimary.withOpacity(0.7),
-                    ),
-                  ),
-                  Text(
-                    "User Name",
+                    "${translator.word(TranslationKeys.welcome)} 👋",
                     style: context.theme.textTheme.titleLarge?.copyWith(
                       color: colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  BlocBuilder<UserCubit, AppStates>(
+                    builder: (context, state) {
+                      return state is LoadedState ? Text(
+                        UserCubit.instance.user.email??"",
+                        style: context.theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimary.withValues(alpha: .7),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ): const SizedBox.shrink();
+                    },
                   )
                 ],
               ),
             ),
-
             // Options List
             Expanded(
               child: ListView(
@@ -102,7 +113,7 @@ class MenuDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                icon: Icon(Icons.logout,color: Colors.white),
+                icon: Icon(Icons.logout, color: Colors.white),
                 label: Text("Logout"),
                 onPressed: () {
                   UserCubit.instance.logout();

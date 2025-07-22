@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../../../config/app_translation_keys.dart';
+import '../../../../handlers/translation_handler.dart';
+
 class AnimatedProfileReminderBanner extends StatefulWidget {
   final bool isVisible;
   final VoidCallback onCompleteProfile;
@@ -104,18 +107,17 @@ class _ProfileCompletionReminderCard extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Complete Your Profile',
-                    style: TextStyle(
+                    translator.word(TranslationKeys.completeProfile),
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Finish setting up your profile to get the best experience.',
+                  const SizedBox(height: 4),
+                  Text(translator.word(TranslationKeys.completeProfileHint),
                     style: TextStyle(fontSize: 13, color: Colors.black54),
                   ),
                 ],
@@ -132,7 +134,7 @@ class _ProfileCompletionReminderCard extends StatelessWidget {
                 ),
               ),
               onPressed: onCompleteProfile,
-              child: const Text('Complete'),
+              child: Text(translator.word(TranslationKeys.submit)),
             ),
           ],
         ),

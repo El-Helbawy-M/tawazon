@@ -16,9 +16,9 @@ class UserCubit extends Cubit<AppStates> {
   //====================================================
   //==================================================== Variables
   //====================================================
-  User _user = User.guest();
+  User user = User.guest();
 
-  bool get hasCompletedProfile => _user.hasCompletedProfile;
+  bool get hasCompletedProfile => user.hasCompletedProfile;
 
   //====================================================
   //==================================================== Functions
@@ -26,7 +26,9 @@ class UserCubit extends Cubit<AppStates> {
   Future<bool> _getUserDataRequest(String userId) async {
     try {
       var result = await FirebaseFirestore.instance.collection(FireStoreTables.users).doc(userId).get();
-      _user = User.fromJson(result.data()!);
+
+      user = User.fromJson(result.data()!);
+      user.id = result.id;
       _cashUserData();
       return true;
     } catch (e) {
@@ -41,11 +43,11 @@ class UserCubit extends Cubit<AppStates> {
     } else if (result.isEmpty) {
       return;
     }
-    _user = User.fromJson(result);
+    user = User.fromJson(result);
   }
 
   _cashUserData() {
-    Map<String, dynamic> mappedData = _user.toJson();
+    Map<String, dynamic> mappedData = user.toJson();
     SharedPrefHandler.instance!.save(AppPersistenceDataKeys.userData, value: mappedData);
   }
 
@@ -59,6 +61,8 @@ class UserCubit extends Cubit<AppStates> {
   //====================================================
   //==================================================== Events
   //====================================================
+  updateEvent() => emit(LoadedState(user));
+
   getUseData(String userId) async {
     emit(LoadingState());
     bool isSuccess = await _getUserDataRequest(userId);
@@ -66,8 +70,8 @@ class UserCubit extends Cubit<AppStates> {
     if (!isSuccess) {
       await _getCashedUserData();
     }
-    log("Email: ${_user.email ?? "Test"}");
-    emit(LoadedState(_user));
+    log("Email: ${user.email ?? "Test"}");
+    emit(LoadedState(user));
   }
 
   logout() {

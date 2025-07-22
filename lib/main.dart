@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'firebase_options.dart';
+import 'firestore_questions_script.dart';
+import 'handlers/translation_handler.dart';
 import 'navigation/app_routes.dart';
 import 'navigation/route_generator.dart';
 import 'utility/style/app_theme.dart';
@@ -40,13 +42,12 @@ class MyApp extends StatelessWidget {
             locale: SettingsCubit.instance.locale,
             onGenerateRoute: generateRoute,
             initialRoute: AppRoutes.splash,
-            // home: ,
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),
             ],
             localizationsDelegates: [
-              // AppLocalizationsDelegate(),
+              AppLocalizationsDelegate(),
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
