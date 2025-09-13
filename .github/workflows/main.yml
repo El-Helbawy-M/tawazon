@@ -26,6 +26,12 @@ jobs:  # Telling what jobs we need to happen
           distribution: 'oracle'
           java-version: '17'
 
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.2' # change to your Flutter version
+
+
       - name: Install Dependencies
         run: flutter pub get
 
