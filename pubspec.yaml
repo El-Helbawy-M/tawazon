@@ -56,9 +56,9 @@ dependencies:
   #==================================== Security
   encrypt: ^5.0.3
   #==================================== UI
-  intl: ^0.19.0
+  intl: ^0.20.2
   mocktail: ^1.0.4
-  file_picker: ^8.1.4
+  file_picker: ^10.3.2
   flutter_bloc: ^9.1.0
   video_player: ^2.9.2
   flutter_html: ^3.0.0
@@ -102,8 +102,8 @@ flutter:
   assets:
    - assets/lang/ar.json
    - assets/lang/en.json
-   - assets/images/
    - assets/icons/
+   - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -130,3 +130,14 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  fonts:
+    - family: rubik
+      fonts:
+        - asset: assets/fonts/rubik/w300.ttf
+        - asset: assets/fonts/rubik/w400.ttf
+        - asset: assets/fonts/rubik/w500.ttf
+        - asset: assets/fonts/rubik/w600.ttf
+        - asset: assets/fonts/rubik/w700.ttf
+        - asset: assets/fonts/rubik/w800.ttf
+        - asset: assets/fonts/rubik/w900.ttf

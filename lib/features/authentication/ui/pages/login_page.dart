@@ -29,7 +29,8 @@ class LoginPage extends StatelessWidget {
             }
             if (newState is LoadedState) {
               context.showSnackBar(Colors.green, "Login successful");
-              Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoutes.home, (route) => false);
             }
           },
           builder: (context, state) {
@@ -38,7 +39,11 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height / 5,
               ),
-              CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
+              const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: Colors.white,
+              ),
               const SizedBox(height: 36),
               TextInputField(
                 labelText: translator.word(TranslationKeys.email),
@@ -64,7 +69,10 @@ class LoginPage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.forgetPassword);
                   },
-                  child: Text("${translator.word(TranslationKeys.forgotPassword)}", style: TextStyle(color: context.theme.colorScheme.primary)),
+                  child: Text(
+                      "${translator.word(TranslationKeys.forgotPassword)}",
+                      style:
+                          TextStyle(color: context.theme.colorScheme.primary)),
                 ),
               ),
               const SizedBox(height: 36),
@@ -72,10 +80,14 @@ class LoginPage extends StatelessWidget {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: state is LoadingState ? null : () {
-                    bloc.add(ClickEvent());
-                  },
-                  child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : Text(translator.word(TranslationKeys.login)),
+                  onPressed: state is LoadingState
+                      ? null
+                      : () {
+                          bloc.add(ClickEvent());
+                        },
+                  child: state is LoadingState
+                      ? const CircularProgressIndicator(strokeWidth: 1)
+                      : Text(translator.word(TranslationKeys.login)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -88,7 +100,9 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(context, AppRoutes.register);
                     },
-                    child: Text(translator.word(TranslationKeys.signUp), style: TextStyle(color: context.theme.colorScheme.primary)),
+                    child: Text(translator.word(TranslationKeys.signUp),
+                        style: TextStyle(
+                            color: context.theme.colorScheme.primary)),
                   ),
                 ],
               )

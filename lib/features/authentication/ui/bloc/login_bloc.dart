@@ -37,7 +37,7 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
   }
 
   bool _validateLoginForm() {
-    emailError = "";//isValidEmail(emailController.text);
+    // emailError = isValidEmail(emailController.text);
     passwordError = isValidPassword(passwordController.text);
 
     return emailError.isEmpty && passwordError.isEmpty;

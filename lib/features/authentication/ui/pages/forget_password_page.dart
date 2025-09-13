@@ -58,8 +58,11 @@ class ForgetPasswordPage extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 8,
                 ),
-                CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
-                const SizedBox(height: 36),
+                const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: Colors.white,
+              ),const SizedBox(height: 36),
                 TextInputField(
                   labelText: translator.word(TranslationKeys.email),
                   hintText: translator.word(TranslationKeys.emailFieldHint),

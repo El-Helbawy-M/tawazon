@@ -7,6 +7,7 @@ final lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: AppColors.primaryColor,
   scaffoldBackgroundColor: AppColors.backgroundColor,
+  fontFamily: rubik,
 
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
@@ -45,7 +46,7 @@ final lightTheme = ThemeData(
     labelSmall: AppTypography.labelSmall,
   ),
 
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.white,
     elevation: 4,
     shape: RoundedRectangleBorder(
@@ -92,14 +93,14 @@ final darkTheme = ThemeData(
   // Fallback primary color for dark mode
   scaffoldBackgroundColor: Colors.black,
   // Main background color for dark mode
-
+  fontFamily: rubik,
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.deepPurple, // AppBar background color
     foregroundColor: Colors.white, // AppBar icon/text color
     elevation: 0,
   ),
 
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     primary: Colors.deepPurple,
     // Brand color
     secondary: Colors.tealAccent,
@@ -127,7 +128,7 @@ final darkTheme = ThemeData(
     bodyMedium: TextStyle(fontSize: 14, color: Colors.white70), // Subtext
   ),
 
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.grey[850], // Card background in dark mode
     elevation: 4,
     shape: RoundedRectangleBorder(

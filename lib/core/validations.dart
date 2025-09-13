@@ -15,7 +15,7 @@ mixin Validations {
 
     // Check Mansoura University student domain
     const mansouraDomain = "@std.mans.edu.eg";
-    if (!email.toLowerCase().endsWith(mansouraDomain)) {
+    if (!email.toLowerCase().contains(mansouraDomain)) {
       return "يجب أن يكون البريد الإلكتروني للطالب على النطاق $mansouraDomain";
     }
 

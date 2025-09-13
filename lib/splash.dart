@@ -1,4 +1,3 @@
-import 'package:base/app/widgets/cashed_network_image.dart';
 import 'package:base/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -36,13 +35,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _navigateToNextScreen() async {
     await Future.delayed(const Duration(seconds: 3));
-    bool? isLoggedIn = SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.isLogin);
+    bool? isLoggedIn =
+        SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.isLogin);
     if (isLoggedIn == true) {
-      String userId = SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.token);
-      UserCubit.instance.getUseData(userId);
-      Navigator.pushReplacementNamed(context,AppRoutes.home);
+      String userId =
+          SharedPrefHandler.instance!.get(key: AppPersistenceDataKeys.token);
+      await UserCubit.instance.getUseData(userId);
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
-      Navigator.pushReplacementNamed(context,AppRoutes.login);
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
 
@@ -52,10 +53,11 @@ class _SplashScreenState extends State<SplashScreen>
       body: Center(
         child: ScaleTransition(
           scale: _animation,
-          child: CashedImage.circleNewWorkImage(
-            radius: 50,
-            image: 'https://images.pexels.com/photos/430205/pexels-photo-430205.jpeg',
-          ), // Replace with your logo
+          child: const CircleAvatar(
+            radius: 75,
+            backgroundImage: AssetImage('assets/images/logo.png'),
+            backgroundColor: Colors.white,
+          ),
         ),
       ),
     );

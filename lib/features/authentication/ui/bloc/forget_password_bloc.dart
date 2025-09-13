@@ -26,7 +26,7 @@ class ForgetPasswordBloc extends Bloc<AppEvents, AppStates> with Validations {
 
 
   bool _validateForm() {
-    emailError = isValidEmail(emailController.text);
+    // emailError = isValidEmail(emailController.text);
     return emailError.isEmpty;
   }
 

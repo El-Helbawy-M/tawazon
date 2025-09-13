@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../core/entities/session_progress_entity.dart';
+import '../../core/entities/session_status.dart';
 
 class SessionCard extends StatelessWidget {
-  final Map<String, dynamic> session;
+  final SessionProgressEntity session;
 
   const SessionCard({Key? key, required this.session}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final title = session['title'] ?? '';
-    final description = session['description'] ?? '';
-    final totalPages = session['totalPages'] ?? 1;
-    final finishedPages = session['finishedPages'] ?? 0;
-    final status = session['status'] ?? '';
+    final title = session.sessionName;
+    final totalPages = session.totalScreens;
+    final finishedPages = session.completedScreens;
+    final sessionStatus = SessionStatus.fromValue(session.status);
 
     final double progress = totalPages > 0
         ? (finishedPages / totalPages).clamp(0.0, 1.0)
@@ -20,17 +21,16 @@ class SessionCard extends StatelessWidget {
     Color statusColor;
     IconData statusIcon;
 
-    switch (status) {
-      case 'Finished':
+    switch (sessionStatus) {
+      case SessionStatus.completed:
         statusColor = Colors.green;
         statusIcon = Icons.check_circle;
         break;
-      case 'In Progress':
+      case SessionStatus.inProgress:
         statusColor = Colors.orange;
         statusIcon = Icons.hourglass_top;
         break;
-      case 'Not Started':
-      default:
+      case SessionStatus.notStarted:
         statusColor = Colors.grey;
         statusIcon = Icons.radio_button_unchecked;
         break;
@@ -57,7 +57,7 @@ class SessionCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              description,
+              'Session Progress',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontSize: isWide ? 16 : 14,
               ),
@@ -85,7 +85,7 @@ class SessionCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Flexible(
                   child: Text(
-                    status,
+                    sessionStatus.displayName,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: statusColor,

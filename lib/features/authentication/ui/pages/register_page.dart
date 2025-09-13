@@ -23,7 +23,8 @@ class RegisterPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           titleSpacing: 0,
-          title: Text(translator.word(TranslationKeys.submit), style: TextStyle(color: Colors.black)),
+          title: Text(translator.word(TranslationKeys.submit),
+              style: TextStyle(color: Colors.black)),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             color: Colors.black,
@@ -46,9 +47,12 @@ class RegisterPage extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("Registered Successfully"),
-                        content: const Text("An email has been sent to your email address with instructions to Verify your email."),
+                        content: const Text(
+                            "An email has been sent to your email address with instructions to Verify your email."),
                         actions: [
-                          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Ok")),
+                          TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("Ok")),
                         ],
                       );
                     },
@@ -62,7 +66,11 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 8,
                   ),
-                  CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
+                  const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: Colors.white,
+              ),
                   const SizedBox(height: 36),
                   TextInputField(
                     labelText: translator.word(TranslationKeys.email),
@@ -74,7 +82,8 @@ class RegisterPage extends StatelessWidget {
                   ),
                   TextInputField(
                     labelText: translator.word(TranslationKeys.password),
-                    hintText: translator.word(TranslationKeys.passwordFieldHint),
+                    hintText:
+                        translator.word(TranslationKeys.passwordFieldHint),
                     keyboardType: TextInputType.visiblePassword,
                     controller: bloc.passwordController,
                     hasError: bloc.passwordError.isNotEmpty,
@@ -82,7 +91,8 @@ class RegisterPage extends StatelessWidget {
                   ),
                   TextInputField(
                     labelText: translator.word(TranslationKeys.confirmPassword),
-                    hintText: translator.word(TranslationKeys.confirmPasswordFieldHint),
+                    hintText: translator
+                        .word(TranslationKeys.confirmPasswordFieldHint),
                     keyboardType: TextInputType.visiblePassword,
                     controller: bloc.confirmPasswordController,
                     hasError: bloc.passwordError.isNotEmpty,
@@ -96,7 +106,10 @@ class RegisterPage extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.forgetPassword);
                       },
-                      child: Text(translator.word(TranslationKeys.forgotPassword), style: TextStyle(color: context.theme.colorScheme.primary)),
+                      child: Text(
+                          translator.word(TranslationKeys.forgotPassword),
+                          style: TextStyle(
+                              color: context.theme.colorScheme.primary)),
                     ),
                   ),
                   const SizedBox(height: 36),
@@ -109,7 +122,9 @@ class RegisterPage extends StatelessWidget {
                           : () {
                               bloc.add(ClickEvent());
                             },
-                      child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : Text(translator.word(TranslationKeys.register)),
+                      child: state is LoadingState
+                          ? const CircularProgressIndicator(strokeWidth: 1)
+                          : Text(translator.word(TranslationKeys.register)),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -122,7 +137,9 @@ class RegisterPage extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Text(translator.word(TranslationKeys.signIn), style: TextStyle(color: context.theme.colorScheme.primary)),
+                        child: Text(translator.word(TranslationKeys.signIn),
+                            style: TextStyle(
+                                color: context.theme.colorScheme.primary)),
                       ),
                     ],
                   )

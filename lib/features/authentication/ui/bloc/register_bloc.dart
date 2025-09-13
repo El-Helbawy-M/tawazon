@@ -31,7 +31,7 @@ class RegisterBloc extends Bloc<AppEvents, AppStates> with Validations {
 
 
   bool _validateRegisterForm() {
-    emailError = "";// isValidEmail(emailController.text);
+    emailError = "";  //isValidEmail(emailController.text);
     passwordError = isValidPassword(passwordController.text);
     confirmPasswordError = isValidConfirmPassword(passwordController.text, confirmPasswordController.text);
 

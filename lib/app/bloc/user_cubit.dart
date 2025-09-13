@@ -70,7 +70,6 @@ class UserCubit extends Cubit<AppStates> {
     if (!isSuccess) {
       await _getCashedUserData();
     }
-    log("Email: ${user.email ?? "Test"}");
     emit(LoadedState(user));
   }
 
