@@ -3,12 +3,9 @@ allprojects {
         google()
         mavenCentral()
         gradlePluginPortal()
-//        flatDir {
-//            dirs '/libs'
-//        }
     }
 }
-
+//fdas
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
