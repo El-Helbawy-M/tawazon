@@ -2,6 +2,11 @@ name: "Build & Release"
 
 on:
   workflow_dispatch:
+    inputs:
+      resumeUrl:
+        description: 'The n8n resume URL'
+        required: false
+        type: string
 
 
 jobs:  # Telling what jobs we need to happen
