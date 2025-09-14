@@ -45,104 +45,33 @@ jobs:  # Telling what jobs we need to happen
           path: |
             build/app/outputs/flutter-apk/app-release.apk
 
-      # Commented out tag and GitHub release steps - replaced with Google Drive upload
-      # - name: Extract version from pubspec.yaml
-      #   id: extract_version
-      #   run: |
-      #     version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
-      #     echo "VERSION=$version" >> $GITHUB_ENV
+      - name: Extract version from pubspec.yaml
+        id: extract_version
+        run: |
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version" >> $GITHUB_ENV
 
-      # - name: Check if Tag Exists
-      #   id: check_tag
-      #   run: |
-      #     if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-      #       echo "TAG_EXISTS=true" >> $GITHUB_ENV
-      #     else
-      #       echo "TAG_EXISTS=false" >> $GITHUB_ENV
-      #     fi
+      - name: Check if Tag Exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
 
-      # - name: Modify Tag
-      #   if: env.TAG_EXISTS == 'true'
-      #   id: modify_tag
-      #   run: |
-      #     new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
-      #     echo "VERSION=$new_version" >> $GITHUB_ENV
+      - name: Modify Tag
+        if: env.TAG_EXISTS == 'true'
+        id: modify_tag
+        run: |
+          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
+          echo "VERSION=$new_version" >> $GITHUB_ENV
         
-      # - name: Create Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
-      #     tag: v${{ env.VERSION }}
-      #     token: ${{ secrets.TOKEN }}
-
-      - name: Setup Python for Google Drive Upload
-        uses: actions/setup-python@v4
+      - name: Create Release
+        uses: ncipollo/release-action@v1
         with:
-          python-version: '3.x'
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+          tag: v${{ env.VERSION }}
+          token: ${{ secrets.TOKEN }}
 
-      - name: Install Google Drive Dependencies
-        run: |
-          pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
-
-      - name: Upload to Google Drive
-        env:
-          GOOGLE_DRIVE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
-          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-        run: |
-          cat > upload_to_drive.py << 'EOF'
-          import os
-          import json
-          from google.oauth2 import service_account
-          from googleapiclient.discovery import build
-          from googleapiclient.http import MediaFileUpload
-          
-          # Load credentials from environment variable
-          credentials_json = os.environ['GOOGLE_DRIVE_CREDENTIALS']
-          folder_id = os.environ['GOOGLE_DRIVE_FOLDER_ID']
-          
-          # Parse credentials
-          credentials_info = json.loads(credentials_json)
-          credentials = service_account.Credentials.from_service_account_info(
-              credentials_info,
-              scopes=['https://www.googleapis.com/auth/drive.file']
-          )
-          
-          # Build the service
-          service = build('drive', 'v3', credentials=credentials)
-          
-          # File details
-          file_path = 'build/app/outputs/flutter-apk/app-release.apk'
-          file_name = f'tawazon-app-${{ github.run_number }}.apk'
-          
-          # Upload file
-          file_metadata = {
-              'name': file_name,
-              'parents': [folder_id]
-          }
-          
-          media = MediaFileUpload(file_path, mimetype='application/vnd.android.package-archive')
-          
-          # Check if file already exists and delete it
-          results = service.files().list(
-              q=f"name='{file_name}' and parents in '{folder_id}'",
-              fields="files(id, name)"
-          ).execute()
-          
-          for file in results.get('files', []):
-              service.files().delete(fileId=file['id']).execute()
-              print(f"Deleted existing file: {file['name']}")
-          
-          # Upload new file
-          file = service.files().create(
-              body=file_metadata,
-              media_body=media,
-              fields='id,name,webViewLink'
-          ).execute()
-          
-          print(f"File uploaded successfully!")
-          print(f"File ID: {file.get('id')}")
-          print(f"File Name: {file.get('name')}")
-          print(f"View Link: {file.get('webViewLink')}")
-          EOF
-          
-          python upload_to_drive.py
+     
