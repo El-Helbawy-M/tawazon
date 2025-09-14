@@ -45,31 +45,43 @@ jobs:  # Telling what jobs we need to happen
           path: |
             build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Extract version from pubspec.yaml
-        id: extract_version
-        run: |
-          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
-          echo "VERSION=$version" >> $GITHUB_ENV
+      # Commented out tag and GitHub release steps - replaced with Google Drive upload
+      # - name: Extract version from pubspec.yaml
+      #   id: extract_version
+      #   run: |
+      #     version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+      #     echo "VERSION=$version" >> $GITHUB_ENV
 
-      - name: Check if Tag Exists
-        id: check_tag
-        run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "TAG_EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "TAG_EXISTS=false" >> $GITHUB_ENV
-          fi
+      # - name: Check if Tag Exists
+      #   id: check_tag
+      #   run: |
+      #     if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+      #       echo "TAG_EXISTS=true" >> $GITHUB_ENV
+      #     else
+      #       echo "TAG_EXISTS=false" >> $GITHUB_ENV
+      #     fi
 
-      - name: Modify Tag
-        if: env.TAG_EXISTS == 'true'
-        id: modify_tag
-        run: |
-          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
-          echo "VERSION=$new_version" >> $GITHUB_ENV
+      # - name: Modify Tag
+      #   if: env.TAG_EXISTS == 'true'
+      #   id: modify_tag
+      #   run: |
+      #     new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
+      #     echo "VERSION=$new_version" >> $GITHUB_ENV
         
-      - name: Create Release
-        uses: ncipollo/release-action@v1
+      # - name: Create Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+      #     tag: v${{ env.VERSION }}
+      #     token: ${{ secrets.TOKEN }}
+
+      - name: Upload to Google Drive
+        uses: adityak74/google-drive-upload-git-action@main
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
-          tag: v${{ env.VERSION }}
-          token: ${{ secrets.TOKEN }}
+          credentials: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+          filename: "app-release.apk"
+          folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          name: "tawazon-app-${{ github.run_number }}.apk"
+          overwrite: "true"
+          mirrorDirectoryStructure: "false"
+          localLocation: "build/app/outputs/flutter-apk/app-release.apk"
