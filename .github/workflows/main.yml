@@ -75,13 +75,74 @@ jobs:  # Telling what jobs we need to happen
       #     tag: v${{ env.VERSION }}
       #     token: ${{ secrets.TOKEN }}
 
-      - name: Upload to Google Drive
-        uses: adityak74/google-drive-upload-git-action@main
+      - name: Setup Python for Google Drive Upload
+        uses: actions/setup-python@v4
         with:
-          credentials: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
-          filename: "app-release.apk"
-          folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-          name: "tawazon-app-${{ github.run_number }}.apk"
-          overwrite: "true"
-          mirrorDirectoryStructure: "false"
-          localLocation: "build/app/outputs/flutter-apk/app-release.apk"
+          python-version: '3.x'
+
+      - name: Install Google Drive Dependencies
+        run: |
+          pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+
+      - name: Upload to Google Drive
+        env:
+          GOOGLE_DRIVE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          cat > upload_to_drive.py << 'EOF'
+          import os
+          import json
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
+          
+          # Load credentials from environment variable
+          credentials_json = os.environ['GOOGLE_DRIVE_CREDENTIALS']
+          folder_id = os.environ['GOOGLE_DRIVE_FOLDER_ID']
+          
+          # Parse credentials
+          credentials_info = json.loads(credentials_json)
+          credentials = service_account.Credentials.from_service_account_info(
+              credentials_info,
+              scopes=['https://www.googleapis.com/auth/drive.file']
+          )
+          
+          # Build the service
+          service = build('drive', 'v3', credentials=credentials)
+          
+          # File details
+          file_path = 'build/app/outputs/flutter-apk/app-release.apk'
+          file_name = f'tawazon-app-${{ github.run_number }}.apk'
+          
+          # Upload file
+          file_metadata = {
+              'name': file_name,
+              'parents': [folder_id]
+          }
+          
+          media = MediaFileUpload(file_path, mimetype='application/vnd.android.package-archive')
+          
+          # Check if file already exists and delete it
+          results = service.files().list(
+              q=f"name='{file_name}' and parents in '{folder_id}'",
+              fields="files(id, name)"
+          ).execute()
+          
+          for file in results.get('files', []):
+              service.files().delete(fileId=file['id']).execute()
+              print(f"Deleted existing file: {file['name']}")
+          
+          # Upload new file
+          file = service.files().create(
+              body=file_metadata,
+              media_body=media,
+              fields='id,name,webViewLink'
+          ).execute()
+          
+          print(f"File uploaded successfully!")
+          print(f"File ID: {file.get('id')}")
+          print(f"File Name: {file.get('name')}")
+          print(f"View Link: {file.get('webViewLink')}")
+          EOF
+          
+          python upload_to_drive.py
