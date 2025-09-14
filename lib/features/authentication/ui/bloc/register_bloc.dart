@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../../configurations/app_events.dart';
-import '../../../../configurations/app_states.dart';
+import '../../../../config/app_events.dart';
+import '../../../../config/app_states.dart';
 import '../../../../core/validations.dart';
 import '../../core/entities/UserData.dart';
 import '../../core/repo/authentication_repo_interface.dart';
@@ -32,7 +31,7 @@ class RegisterBloc extends Bloc<AppEvents, AppStates> with Validations {
 
 
   bool _validateRegisterForm() {
-    emailError = isValidEmail(emailController.text);
+    emailError = "";  //isValidEmail(emailController.text);
     passwordError = isValidPassword(passwordController.text);
     confirmPasswordError = isValidConfirmPassword(passwordController.text, confirmPasswordController.text);
 

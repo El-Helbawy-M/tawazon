@@ -1,12 +1,10 @@
-import 'dart:developer';
-
+import 'package:base/app/bloc/user_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../configurations/app_events.dart';
-import '../../../../configurations/app_persistence_data_keys.dart';
-import '../../../../configurations/app_states.dart';
+import '../../../../config/app_events.dart';
+import '../../../../config/app_persistence_data_keys.dart';
+import '../../../../config/app_states.dart';
 import '../../../../core/validations.dart';
 import '../../../../handlers/shared_handler.dart';
 import '../../core/repo/authentication_repo_interface.dart';
@@ -39,7 +37,7 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
   }
 
   bool _validateLoginForm() {
-    emailError = isValidEmail(emailController.text);
+    // emailError = isValidEmail(emailController.text);
     passwordError = isValidPassword(passwordController.text);
 
     return emailError.isEmpty && passwordError.isEmpty;
@@ -60,6 +58,11 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
     SharedPrefHandler.instance!.save(AppPersistenceDataKeys.isLogin, value: true);
   }
 
+  void _onLoginSuccess(UserCredential userCredential) async{
+    _cashUser(userCredential.user!.uid);
+    UserCubit.instance.getUseData(userCredential.user!.uid);
+  }
+
 
   //===================================================
   //=================================================== Events
@@ -75,7 +78,7 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
     emit(LoadingState());
     try {
       UserCredential userCredential = await _loginRequest();
-      await _cashUser(userCredential.user!.uid);
+      _onLoginSuccess(userCredential);
       emit(LoadedState(userCredential));
     } catch (e) {
       emit(ErrorState(e.toString()));

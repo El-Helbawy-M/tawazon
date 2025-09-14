@@ -1,23 +1,29 @@
 import 'package:base/app/bloc/settings_cubit.dart';
-import 'package:base/configurations/app_states.dart';
+import 'package:base/app/bloc/user_cubit.dart';
+import 'package:base/config/app_states.dart';
 import 'package:base/handlers/security/AESEncryptor.dart';
 import 'package:base/handlers/shared_handler.dart';
-import 'package:base/navigation/app_routes.dart';
+import 'package:base/mcp_case.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'firebase_options.dart';
-import 'utility/style/app_theme.dart';
+import 'handlers/translation_handler.dart';
+import 'navigation/app_routes.dart';
 import 'navigation/route_generator.dart';
+import 'utility/style/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
   SharedPrefHandler.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseFirestore.setLoggingEnabled(true);
   AESEncryptor.init();
   runApp(const MyApp());
 }
@@ -27,22 +33,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SettingsCubit.instance,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SettingsCubit.instance),
+        BlocProvider(create: (context) => UserCubit.instance),
+      ],
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: SettingsCubit.instance.isDarkMode ? ThemeData.dark() : lightTheme,
+            theme: SettingsCubit.instance.isDarkMode ? darkTheme : lightTheme,
             locale: SettingsCubit.instance.locale,
-            onGenerateRoute: generateRoute,
-            initialRoute: AppRoutes.splash,
+            // onGenerateRoute: generateRoute,
+            // initialRoute: AppRoutes.splash,
+            home: const FigmaUIScreen(),
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),
             ],
             localizationsDelegates: [
-              // AppLocalizationsDelegate(),
+              AppLocalizationsDelegate(),
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,

@@ -1,12 +1,15 @@
 import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
 import 'package:base/app/widgets/cashed_network_image.dart';
 import 'package:base/app/widgets/fields/text_input_field.dart';
-import 'package:base/configurations/app_events.dart';
-import 'package:base/configurations/app_states.dart';
+import 'package:base/config/app_events.dart';
+import 'package:base/config/app_states.dart';
 import 'package:base/features/authentication/ui/bloc/forget_password_bloc.dart';
 import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../config/app_translation_keys.dart';
+import '../../../../handlers/translation_handler.dart';
 
 /// A widget representing the login page of the application.
 class ForgetPasswordPage extends StatelessWidget {
@@ -25,7 +28,7 @@ class ForgetPasswordPage extends StatelessWidget {
             },
           ),
           titleSpacing: 0,
-          title: const Text("Forget Password", style: TextStyle(color: Colors.black)),
+          title: Text(translator.word(TranslationKeys.forgotPassword), style: TextStyle(color: Colors.black)),
         ),
         body: CancelKeyboardGesture(
       child: SingleChildScrollView(
@@ -55,11 +58,14 @@ class ForgetPasswordPage extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 8,
                 ),
-                CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
-                const SizedBox(height: 36),
+                const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: Colors.white,
+              ),const SizedBox(height: 36),
                 TextInputField(
-                  labelText: "Email",
-                  hintText: "Enter your email",
+                  labelText: translator.word(TranslationKeys.email),
+                  hintText: translator.word(TranslationKeys.emailFieldHint),
                   keyboardType: TextInputType.emailAddress,
                   controller: bloc.emailController,
                   hasError: bloc.emailError.isNotEmpty,
@@ -75,7 +81,7 @@ class ForgetPasswordPage extends StatelessWidget {
                         : () {
                             bloc.add(ClickEvent());
                           },
-                    child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : const Text("Submit"),
+                    child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : Text(translator.word(TranslationKeys.submit)),
                   ),
                 ),
               ],

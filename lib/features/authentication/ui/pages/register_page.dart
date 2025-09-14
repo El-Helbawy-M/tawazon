@@ -1,8 +1,11 @@
 import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
 import 'package:base/app/widgets/cashed_network_image.dart';
 import 'package:base/app/widgets/fields/text_input_field.dart';
-import 'package:base/configurations/app_events.dart';
-import 'package:base/configurations/app_states.dart';
+import 'package:base/config/app_events.dart';
+import 'package:base/config/app_persistence_data_keys.dart';
+import 'package:base/config/app_states.dart';
+import 'package:base/config/app_translation_keys.dart';
+import 'package:base/handlers/translation_handler.dart';
 import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +23,8 @@ class RegisterPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           titleSpacing: 0,
-          title: const Text("Register", style: TextStyle(color: Colors.black)),
+          title: Text(translator.word(TranslationKeys.submit),
+              style: TextStyle(color: Colors.black)),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             color: Colors.black,
@@ -43,9 +47,12 @@ class RegisterPage extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("Registered Successfully"),
-                        content: const Text("An email has been sent to your email address with instructions to Verify your email."),
+                        content: const Text(
+                            "An email has been sent to your email address with instructions to Verify your email."),
                         actions: [
-                          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Ok")),
+                          TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("Ok")),
                         ],
                       );
                     },
@@ -59,27 +66,33 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 8,
                   ),
-                  CashedImage.circleNewWorkImage(radius: 50, image: "https://images.pexels.com/photos/170809/pexels-photo-170809.jpeg"),
+                  const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: Colors.white,
+              ),
                   const SizedBox(height: 36),
                   TextInputField(
-                    labelText: "Email",
-                    hintText: "Enter your email",
+                    labelText: translator.word(TranslationKeys.email),
+                    hintText: translator.word(TranslationKeys.emailFieldHint),
                     keyboardType: TextInputType.emailAddress,
                     controller: bloc.emailController,
                     hasError: bloc.emailError.isNotEmpty,
                     errorText: bloc.emailError,
                   ),
                   TextInputField(
-                    labelText: "Password",
-                    hintText: "Enter your password",
+                    labelText: translator.word(TranslationKeys.password),
+                    hintText:
+                        translator.word(TranslationKeys.passwordFieldHint),
                     keyboardType: TextInputType.visiblePassword,
                     controller: bloc.passwordController,
                     hasError: bloc.passwordError.isNotEmpty,
                     errorText: bloc.passwordError,
                   ),
                   TextInputField(
-                    labelText: "Confirm Password",
-                    hintText: "Confirm your password",
+                    labelText: translator.word(TranslationKeys.confirmPassword),
+                    hintText: translator
+                        .word(TranslationKeys.confirmPasswordFieldHint),
                     keyboardType: TextInputType.visiblePassword,
                     controller: bloc.confirmPasswordController,
                     hasError: bloc.passwordError.isNotEmpty,
@@ -93,7 +106,10 @@ class RegisterPage extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.forgetPassword);
                       },
-                      child: Text("Forgot password?", style: TextStyle(color: context.theme.colorScheme.primary)),
+                      child: Text(
+                          translator.word(TranslationKeys.forgotPassword),
+                          style: TextStyle(
+                              color: context.theme.colorScheme.primary)),
                     ),
                   ),
                   const SizedBox(height: 36),
@@ -106,20 +122,24 @@ class RegisterPage extends StatelessWidget {
                           : () {
                               bloc.add(ClickEvent());
                             },
-                      child: state is LoadingState ? const CircularProgressIndicator(strokeWidth: 1) : const Text("Register"),
+                      child: state is LoadingState
+                          ? const CircularProgressIndicator(strokeWidth: 1)
+                          : Text(translator.word(TranslationKeys.register)),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("have an account! "),
+                      Text(translator.word(TranslationKeys.haveAnAccount)),
                       const SizedBox(width: 8),
                       InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Text("Sign in", style: TextStyle(color: context.theme.colorScheme.primary)),
+                        child: Text(translator.word(TranslationKeys.signIn),
+                            style: TextStyle(
+                                color: context.theme.colorScheme.primary)),
                       ),
                     ],
                   )
