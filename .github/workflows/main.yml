@@ -1,14 +1,7 @@
 name: "Build & Release"
 
 on:
-  pull_request:
-    branches:
-      - staging
-      - main
-  push:
-    branches:
-      - staging
-      - main
+  workflow_dispatch:
 
 
 jobs:  # Telling what jobs we need to happen
