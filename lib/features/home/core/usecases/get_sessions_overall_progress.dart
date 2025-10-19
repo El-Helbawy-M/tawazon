@@ -6,10 +6,10 @@ import '../../../../config/firestore_tables.dart';
 import '../entities/sessions_overall_progress_entity.dart';
 
 /// A use case class for fetching user sessions overall progress from Firebase Firestore.
-/// 
+///
 /// This class handles the retrieval of user progress documents from the 'user_progress' collection.
 /// The document contains session progress tracking, quiz results, and overall progress metrics.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// final getSessionsProgress = GetSessionsOverallProgress();
@@ -19,19 +19,19 @@ class GetSessionsOverallProgress {
   final FirebaseFirestore _firestore;
 
   /// Creates an instance of [GetSessionsOverallProgress].
-  /// 
+  ///
   /// [firestore] The Firestore instance to use. Defaults to the default instance.
   GetSessionsOverallProgress({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
   /// Fetches the user sessions overall progress from the 'user_progress' collection.
-  /// 
+  ///
   /// [userId] The unique identifier for the user. This will be used as the document ID.
-  /// 
+  ///
   /// Returns [Either<Failure, SessionsOverallProgressEntity>] where:
   /// - Left side contains a [Failure] if the operation fails
   /// - Right side contains [SessionsOverallProgressEntity] if the document was fetched successfully
-  /// 
+  ///
   /// Throws [ValidationFailure] if userId is empty or null.
   /// Throws [NotFoundFailure] if the user progress document doesn't exist.
   /// Throws [ServerFailure] if Firestore operation fails.
@@ -53,7 +53,8 @@ class GetSessionsOverallProgress {
 
       // Check if document exists
       if (!docSnapshot.exists) {
-        return Left(NotFoundFailure('User progress not found for user: $userId'));
+        return Left(
+            NotFoundFailure('User progress not found for user: $userId'));
       }
 
       // Get document data
@@ -69,7 +70,8 @@ class GetSessionsOverallProgress {
     } on FirebaseException catch (e) {
       return Left(ServerFailure('Failed to fetch user progress: ${e.message}'));
     } catch (e) {
-      return Left(UnknownFailure('Unexpected error occurred while fetching user progress'));
+      return Left(UnknownFailure(
+          'Unexpected error occurred while fetching user progress'));
     }
   }
 }

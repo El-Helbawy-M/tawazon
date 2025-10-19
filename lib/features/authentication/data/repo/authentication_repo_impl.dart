@@ -1,6 +1,6 @@
-import 'package:base/features/authentication/core/entities/UserData.dart';
-import 'package:base/features/authentication/core/usecases/create_user_progress.dart';
-import 'package:base/features/authentication/core/usecases/create_firestore_user.dart';
+import 'package:tawazon/features/authentication/core/entities/UserData.dart';
+import 'package:tawazon/features/authentication/core/usecases/create_user_progress.dart';
+import 'package:tawazon/features/authentication/core/usecases/create_firestore_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../config/app_errors.dart';

@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
 
 class ImagePickerHandler {
   final ImagePicker _picker = ImagePicker();
@@ -33,7 +35,7 @@ class ImagePickerHandler {
               const SizedBox(height: 16),
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Gallery'),
+                title: Text(translator.word(TranslationKeys.gallery)),
                 onTap: () async {
                   final image = await pickImage(source: ImageSource.gallery);
                   Navigator.pop(context, image);
@@ -41,7 +43,7 @@ class ImagePickerHandler {
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
+                title: Text(translator.word(TranslationKeys.camera)),
                 onTap: () async {
                   final image = await pickImage(source: ImageSource.camera);
                   Navigator.pop(context, image);

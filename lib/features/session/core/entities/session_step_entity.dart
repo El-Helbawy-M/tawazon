@@ -31,7 +31,7 @@ class SessionStepEntity {
       title: title ?? this.title,
       contentItems: contentItems ?? this.contentItems,
       type: type ?? this.type,
-      metadata: metadata ?? this.metadata,
+      metadata: metadata,
       isCompleted: isCompleted ?? this.isCompleted,
     );
   }
@@ -42,4 +42,5 @@ enum SessionStepType {
   content,
   summary,
   conclusion,
+  quiz,
 }

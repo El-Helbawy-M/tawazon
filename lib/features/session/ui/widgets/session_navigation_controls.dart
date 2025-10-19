@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/entities/session_entity.dart';
+import '../../core/entities/session_step_entity.dart';
 import '../bloc/session_bloc.dart';
 import '../../../../utility/style/app_colors.dart';
 
 /// Navigation controls for session steps (Previous, Next, Complete)
 class SessionNavigationControls extends StatelessWidget {
   final SessionEntity session;
+  final GlobalKey<FormState>? formKey;
 
   const SessionNavigationControls({
     Key? key,
     required this.session,
+    this.formKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isLastStep = session.currentStep == session.steps.length - 1;
+    void handleNext() {
+      // Block if last step is a quiz and validation fails
+      final currentStep = session.steps[session.currentStep];
+      if (isLastStep && currentStep.type == SessionStepType.quiz) {
+        final isValid = formKey?.currentState?.validate() ?? true;
+        if (!isValid) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('يرجى تعبئة الحقول المطلوبة')),
+          );
+          return;
+        }
+      }
+      if (isLastStep) {
+        context.read<SessionBloc>().completeSession();
+      } else {
+        context.read<SessionBloc>().nextStep();
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -31,21 +54,20 @@ class SessionNavigationControls extends StatelessWidget {
         child: Row(
           children: [
             // Previous button
-            Expanded(
+            if(session.canGoPrevious)
+              Expanded(
               child: _PreviousButton(
-                canGoPrevious: session.canGoPrevious,
                 onPressed: () => context.read<SessionBloc>().previousStep(),
               ),
             ),
-            
-            const SizedBox(width: 12),
-            
+
+            if(session.canGoNext||!session.steps[session.currentStep].isCompleted)const SizedBox(width: 12),
+
             // Next button
-            Expanded(
+            if(session.canGoNext||!session.steps[session.currentStep].isCompleted)Expanded(
               child: _NextButton(
-                canGoNext: session.canGoNext,
-                isLastStep: session.currentStep == session.steps.length - 1,
-                onPressed: () => context.read<SessionBloc>().nextStep(),
+                isLastStep: isLastStep,
+                onPressed: handleNext,
               ),
             ),
           ],
@@ -57,22 +79,21 @@ class SessionNavigationControls extends StatelessWidget {
 
 /// Previous step button
 class _PreviousButton extends StatelessWidget {
-  final bool canGoPrevious;
   final VoidCallback onPressed;
 
   const _PreviousButton({
-    required this.canGoPrevious,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: canGoPrevious ? onPressed : null,
+      onPressed: onPressed,
       icon: const Icon(Icons.arrow_back, size: 18),
       label: const Text('السابق'),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        backgroundColor:
+            Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12),
         shape: RoundedRectangleBorder(
@@ -83,15 +104,13 @@ class _PreviousButton extends StatelessWidget {
   }
 }
 
-
 /// Next step button
 class _NextButton extends StatelessWidget {
-  final bool canGoNext;
   final bool isLastStep;
   final VoidCallback onPressed;
 
+
   const _NextButton({
-    required this.canGoNext,
     required this.isLastStep,
     required this.onPressed,
   });
@@ -101,19 +120,24 @@ class _NextButton extends StatelessWidget {
     final buttonText = isLastStep ? 'إنهاء' : 'التالي';
     final buttonIcon = isLastStep ? Icons.flag : Icons.arrow_forward;
 
-    return ElevatedButton.icon(
-      onPressed: canGoNext ? onPressed : null,
-      icon: Icon(buttonIcon, size: 18),
-      label: Text(buttonText),
+    return ElevatedButton(
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isLastStep 
-            ? AppColors.successColor 
-            : Theme.of(context).primaryColor,
+        backgroundColor:
+            isLastStep ? AppColors.successColor : Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(buttonText),
+          const SizedBox(width: 8),
+          Icon(buttonIcon, size: 18),
+        ],
       ),
     );
   }

@@ -26,6 +26,7 @@ class TextInputField extends StatefulWidget {
     this.focusBorderColor,
     this.enableBorderColor,
     this.enableTimerBeforeChange = false,
+    this.validator,
   });
 
   final String? hintText;
@@ -46,6 +47,7 @@ class TextInputField extends StatefulWidget {
   final BorderRadius? borderRadius;
   final Color? focusBorderColor;
   final Color? enableBorderColor;
+  final String? Function(String?)? validator;
 
   @override
   State<TextInputField> createState() => _TextInputFieldState();
@@ -113,6 +115,7 @@ class _TextInputFieldState extends State<TextInputField> {
           child: TextFormField(
             controller: widget.controller,
             initialValue: widget.controller != null ? null : widget.initialValue,
+            validator: widget.validator,
             onChanged: (val) {
               if (widget.enableTimerBeforeChange) {
                 if (timer != null) {

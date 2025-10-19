@@ -1,8 +1,8 @@
-import 'package:base/features/complete_profile/core/models/survey_question.dart';
+import 'package:tawazon/features/complete_profile/core/models/survey_question.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../app/models/select_option.dart';
-import '../../../../app/widgets/fields/choices_input_field.dart';
+import '../../../../shared/models/select_option.dart';
+import '../../../../shared/widgets/fields/choices_input_field.dart';
 
 class StepForm extends StatelessWidget {
   const StepForm({super.key, required this.questions});

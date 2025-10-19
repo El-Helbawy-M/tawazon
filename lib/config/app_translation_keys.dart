@@ -39,5 +39,47 @@ abstract class TranslationKeys {
   static const String countrySide = 'country_side';
   static const String yes = 'yes';
   static const String no = 'no';
-  static const String completeProfileSuccessMessage = 'complete_profile_success_message';
+  static const String completeProfileSuccessMessage =
+      'complete_profile_success_message';
+
+  // Newly added keys
+  static const String language = 'language';
+  static const String home = 'home';
+  static const String logout = 'logout';
+  static const String noSessionsAvailable = 'no_sessions_available';
+  static const String noDataAvailable = 'no_data_available';
+  static const String registeredSuccessfullyTitle =
+      'registered_successfully_title';
+  static const String registeredSuccessfullyBody =
+      'registered_successfully_body';
+  static const String ok = 'ok';
+  static const String emailSentTitle = 'email_sent_title';
+  static const String emailSentBody = 'email_sent_body';
+  static const String gallery = 'gallery';
+  static const String camera = 'camera';
+  static const String clear = 'clear';
+  static const String sessionProgress = 'session_progress';
+  static const String alreadyAtLastStep = 'already_at_last_step';
+  static const String alreadyAtFirstStep = 'already_at_first_step';
+
+  // Session status localization
+  static const String sessionStatusCompleted = 'session_status_completed';
+  static const String sessionStatusInProgress = 'session_status_in_progress';
+  static const String sessionStatusNotStarted = 'session_status_not_started';
+
+  // Phrase parts for progress line
+  static const String of = 'of';
+  static const String pagesCompleted = 'pages_completed';
+
+  // Language picker
+  static const String selectLanguage = 'select_language';
+
+  // Resubmit Survey alert
+  static const String resubmitSurveyTitle = 'resubmit_survey_title';
+  static const String resubmitSurveyHint = 'resubmit_survey_hint';
+  static const String resubmitSurveyAction = 'resubmit_survey_action';
+  
+  // Home bottom bar survey ready message and start action
+  static const String surveyReadyMessage = 'survey_ready_message';
+  static const String start = 'start';
 }

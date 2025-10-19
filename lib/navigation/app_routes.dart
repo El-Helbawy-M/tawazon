@@ -13,6 +13,7 @@ abstract class AppRoutes {
   //=======================================================
   static const String home = "/home";
   static const String completeProfile = "/complete_profile";
+  static const String repeatSurvey = "/repeat_survey";
   //=======================================================
   //======================================================= Session Routes
   //=======================================================

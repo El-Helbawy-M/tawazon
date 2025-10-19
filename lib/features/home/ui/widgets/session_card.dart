@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
 import '../../core/entities/session_progress_entity.dart';
 import '../../core/entities/session_status.dart';
 
@@ -57,7 +59,7 @@ class SessionCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Session Progress',
+              translator.word(TranslationKeys.sessionProgress),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontSize: isWide ? 16 : 14,
               ),
@@ -71,7 +73,7 @@ class SessionCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '$finishedPages of $totalPages pages completed',
+              '$finishedPages ${translator.word(TranslationKeys.of)} $totalPages ${translator.word(TranslationKeys.pagesCompleted)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.black87,
                 fontSize: isWide ? 14 : 12,
@@ -85,7 +87,7 @@ class SessionCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Flexible(
                   child: Text(
-                    sessionStatus.displayName,
+                    _localizedStatus(sessionStatus),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: statusColor,
@@ -100,6 +102,17 @@ class SessionCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _localizedStatus(SessionStatus status) {
+    switch (status) {
+      case SessionStatus.completed:
+        return translator.word(TranslationKeys.sessionStatusCompleted);
+      case SessionStatus.inProgress:
+        return translator.word(TranslationKeys.sessionStatusInProgress);
+      case SessionStatus.notStarted:
+        return translator.word(TranslationKeys.sessionStatusNotStarted);
+    }
   }
 }
 

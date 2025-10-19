@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:base/network/app_end_points.dart';
+import 'package:tawazon/network/app_end_points.dart';
 import 'package:dio/dio.dart';
 
 class NetworkHandler {

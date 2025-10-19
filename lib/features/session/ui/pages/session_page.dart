@@ -30,7 +30,31 @@ class _SessionPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final formKey = GlobalKey<FormState>();
+    return BlocListener<SessionBloc, AppStates>(
+      listener: (context, state) {
+        if (state is SessionCompletedState) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: true,
+            builder: (ctx) => AlertDialog(
+              title: const Text('تهانينا!'),
+              content: const Text('لقد أكملت الجلسة بنجاح.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: const Text('حسناً'),
+                ),
+              ],
+            ),
+          ).then((_) {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          });
+        }
+      },
+      child: Scaffold(
       appBar: AppBar(
         title: BlocBuilder<SessionBloc, AppStates>(
           builder: (context, state) {
@@ -89,11 +113,12 @@ class _SessionPageContent extends StatelessWidget {
                     child: SessionStepContent(
                       session: session,
                       currentStep: session.currentStep,
+                      formKey: formKey,
                     ),
                   ),
                   
                   // Navigation controls at the bottom
-                  SessionNavigationControls(session: session),
+                  SessionNavigationControls(session: session, formKey: formKey),
                 ],
               ),
             _ => const Center(
@@ -102,6 +127,7 @@ class _SessionPageContent extends StatelessWidget {
           };
         },
       ),
+    ),
     );
   }
 }

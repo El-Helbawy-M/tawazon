@@ -1,7 +1,5 @@
-import 'dart:developer';
-
-import 'package:base/config/app_errors.dart';
-import 'package:base/features/complete_profile/core/models/survey_form.dart';
+import 'package:tawazon/config/app_errors.dart';
+import 'package:tawazon/features/complete_profile/core/models/survey_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 
@@ -104,6 +102,20 @@ class CompleteProfileRepoImp extends CompleteProfileRepoInterface {
     try {
       await _submitSurveys(surveysParams);
       await _submitCompleteProfile(completeProfileParams);
+      return const Right(true);
+    } on FirebaseException catch (e) {
+      return Left(ServerFailure(e.message ?? ''));
+    } catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> submitSurveysOnly({
+    required SurveysSubmissionParams surveysParams,
+  }) async {
+    try {
+      await _submitSurveys(surveysParams);
       return const Right(true);
     } on FirebaseException catch (e) {
       return Left(ServerFailure(e.message ?? ''));

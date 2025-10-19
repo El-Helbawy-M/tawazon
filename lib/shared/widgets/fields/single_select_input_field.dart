@@ -101,9 +101,9 @@ class _SingleSelectInputFieldState extends State<SingleSelectInputField> {
               const SizedBox(width: 4),
               Expanded(
                   child: Text(
-                    widget.errorText ?? "Error",
-                    style: const TextStyle(color: Colors.red),
-                  )),
+                widget.errorText ?? "Error",
+                style: const TextStyle(color: Colors.red),
+              )),
             ],
           ),
         if (widget.withBottomPadding) const SizedBox(height: 16),
@@ -111,8 +111,6 @@ class _SingleSelectInputFieldState extends State<SingleSelectInputField> {
     );
   }
 }
-
-
 
 Future<SelectOption?> showSingleOptionBottomSheet({
   required BuildContext context,
@@ -147,10 +145,7 @@ Future<SelectOption?> showSingleOptionBottomSheet({
             ),
             Row(
               children: [
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                const SizedBox(width: 48),
                 Expanded(
                   child: Text(
                     "اختر $label",
@@ -161,7 +156,10 @@ Future<SelectOption?> showSingleOptionBottomSheet({
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(width: 48),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -184,13 +182,16 @@ Future<SelectOption?> showSingleOptionBottomSheet({
                         Navigator.pop(context, option);
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14),
                         child: Row(
                           children: [
                             Icon(
                               Icons.label_outline,
                               size: 22,
-                              color: isSelected ? Colors.blue : Colors.grey.shade400,
+                              color: isSelected
+                                  ? Colors.blue
+                                  : Colors.grey.shade400,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -198,7 +199,9 @@ Future<SelectOption?> showSingleOptionBottomSheet({
                                 option.label,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
                                   color: Colors.black87,
                                 ),
                               ),
@@ -210,7 +213,9 @@ Future<SelectOption?> showSingleOptionBottomSheet({
                                     ? Icons.check_circle_rounded
                                     : Icons.radio_button_unchecked,
                                 key: ValueKey(isSelected),
-                                color: isSelected ? Colors.blue : Colors.grey.shade400,
+                                color: isSelected
+                                    ? Colors.blue
+                                    : Colors.grey.shade400,
                               ),
                             ),
                           ],

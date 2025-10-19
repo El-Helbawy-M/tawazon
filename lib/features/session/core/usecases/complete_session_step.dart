@@ -1,11 +1,13 @@
-import 'package:base/app/bloc/user_cubit.dart';
-import 'package:base/config/firestore_tables.dart';
-import 'package:base/features/session/core/entities/session_status.dart';
+import 'dart:developer';
+
+import 'package:tawazon/shared/bloc/user_cubit.dart';
+import 'package:tawazon/config/firestore_tables.dart';
+import 'package:tawazon/features/session/core/entities/session_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../config/app_errors.dart';
+import '../../../../handlers/audio_player_handler.dart';
 import '../entities/session_entity.dart';
-import '../entities/session_step_entity.dart';
 
 /// Use case for completing a session step and user progress in Firestore
 class CompleteSessionStep {
@@ -30,16 +32,15 @@ class CompleteSessionStep {
   }) {
     try {
       // Mark the step as completed
-      final updatedSteps = List<SessionStepEntity>.from(sessionEntity.steps);
-      final currentStep = updatedSteps[stepIndex];
+      final currentStep = sessionEntity.steps[stepIndex];
+      final updatedSession = sessionEntity.copyWith(currentStep: stepIndex+1);
       if (!currentStep.isCompleted) {
-        updatedSteps[stepIndex] = currentStep.copyWith(isCompleted: true);
-        final updatedSession = sessionEntity.copyWith(steps: updatedSteps);
-        _updateUserProgress(updatedSession);
-        return Right(updatedSession);
+        sessionEntity.steps[stepIndex] = currentStep.copyWith(isCompleted: true);
+        var updatedSessionSteps = updatedSession.copyWith(steps: sessionEntity.steps);
+        _updateUserProgress(updatedSessionSteps);
+        return Right(updatedSessionSteps);
       }
-
-      return Right(sessionEntity);
+      return Right(updatedSession);
     } catch (e) {
       return Left(UnknownFailure('Failed to complete session step'));
     }
@@ -49,7 +50,7 @@ class CompleteSessionStep {
   ///
   /// [sessionEntity] The session entity containing updated progress data
   Future<void> _updateUserProgress(SessionEntity sessionEntity) async {
-    // For now, we'll use a hardcoded userId. In a real app, this would come from authentication
+    // For now, we'll use a hardcoded userId. In a real shared, this would come from authentication
     String userId = UserCubit.instance.user.id ?? "";
 
     final now = Timestamp.now();
@@ -64,14 +65,15 @@ class CompleteSessionStep {
     }
 
     // Update the specific session's progress in the user_progress document
+    final updateData = <String, dynamic>{
+      'sessions.${sessionEntity.id}.screenProgress.completedScreens': completedScreens,
+      'sessions.${sessionEntity.id}.status': status.value,
+      'updatedAt': now,
+    };
+
     await _firestore
         .collection(FireStoreTables.userProgress)
         .doc(userId)
-        .update({
-      'sessions.${sessionEntity.id}.screenProgress.completedScreens':
-          completedScreens,
-      'sessions.${sessionEntity.id}.status': status.value,
-      'updatedAt': now,
-    });
+        .update(updateData);
   }
 }

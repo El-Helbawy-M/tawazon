@@ -1,7 +1,7 @@
-// import 'package:base/app/models/select_option.dart';
-// import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
-// import 'package:base/app/widgets/fields/multic_select_input_field.dart';
-// import 'package:base/app/widgets/fields/text_input_field.dart';
+// import 'package:base/shared/models/select_option.dart';
+// import 'package:base/shared/widgets/cancel_keyboard_gesture.dart';
+// import 'package:base/shared/widgets/fields/multic_select_input_field.dart';
+// import 'package:base/shared/widgets/fields/text_input_field.dart';
 // import 'package:flutter/material.dart';
 //
 // class CompleteProfilePage extends StatelessWidget {
@@ -66,12 +66,12 @@
 // }
 
 
-import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
-import 'package:base/config/app_states.dart';
-import 'package:base/config/app_translation_keys.dart';
-import 'package:base/features/complete_profile/core/models/survey_form.dart';
-import 'package:base/features/complete_profile/ui/blocs/survey_forms_bloc.dart';
-import 'package:base/handlers/translation_handler.dart';
+import 'package:tawazon/shared/widgets/cancel_keyboard_gesture.dart';
+import 'package:tawazon/config/app_states.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
+import 'package:tawazon/features/complete_profile/core/models/survey_form.dart';
+import 'package:tawazon/features/complete_profile/ui/blocs/survey_forms_bloc.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'personal_data_form.dart';

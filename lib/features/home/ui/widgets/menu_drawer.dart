@@ -1,12 +1,12 @@
-import 'package:base/app/bloc/user_cubit.dart';
-import 'package:base/config/app_states.dart';
-import 'package:base/handlers/translation_handler.dart';
-import 'package:base/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../config/app_translation_keys.dart';
-import '../../../../navigation/app_routes.dart';
+import 'package:tawazon/shared/bloc/user_cubit.dart';
+import 'package:tawazon/config/app_states.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
+import 'package:tawazon/navigation/app_routes.dart';
+import 'language_picker_bottom_sheet.dart';
+import 'package:tawazon/utility/extensions/context_extensions.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
@@ -25,7 +25,6 @@ class MenuDrawer extends StatelessWidget {
             DrawerHeader(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.zero,
-
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -58,13 +57,17 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   BlocBuilder<UserCubit, AppStates>(
                     builder: (context, state) {
-                      return state is LoadedState ? Text(
-                        UserCubit.instance.user.email??"",
-                        style: context.theme.textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onPrimary.withValues(alpha: .7),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ): const SizedBox.shrink();
+                      return state is LoadedState
+                          ? Text(
+                              UserCubit.instance.user.email ?? "",
+                              style:
+                                  context.theme.textTheme.bodyMedium?.copyWith(
+                                color:
+                                    colorScheme.onPrimary.withValues(alpha: .7),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : const SizedBox.shrink();
                     },
                   )
                 ],
@@ -74,24 +77,24 @@ class MenuDrawer extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
+                  // 📓 No need for this option now
+                  // ===================================
+                  // ListTile(
+                  //   leading: Icon(Icons.home, color: colorScheme.primary),
+                  //   title: Text(translator.word(TranslationKeys.home)),
+                  //   onTap: () {
+                  //     // Handle tap
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
                   ListTile(
-                    leading: Icon(Icons.home, color: colorScheme.primary),
-                    title: Text("Home"),
-                    onTap: () {
-                      // Handle tap
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.settings, color: colorScheme.primary),
-                    title: Text("Settings"),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                    leading: Icon(Icons.language, color: colorScheme.primary),
+                    title: Text(translator.word(TranslationKeys.language)),
+                    onTap: () => LanguagePickerBottomSheet.show(context),
                   ),
                   ListTile(
                     leading: Icon(Icons.info, color: colorScheme.primary),
-                    title: Text("About"),
+                    title: Text(translator.word(TranslationKeys.about)),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -114,7 +117,7 @@ class MenuDrawer extends StatelessWidget {
                   ),
                 ),
                 icon: Icon(Icons.logout, color: Colors.white),
-                label: Text("Logout"),
+                label: Text(translator.word(TranslationKeys.logout)),
                 onPressed: () {
                   UserCubit.instance.logout();
                   Navigator.pop(context);

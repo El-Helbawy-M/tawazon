@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '42243577128',
     projectId: 'tawazon-69d9b',
     authDomain: 'tawazon-69d9b.firebaseapp.com',
-    storageBucket: 'tawazon-69d9b.firebasestorage.app',
+    storageBucket: 'tawazon-69d9b.firebasestorage.shared',
     measurementId: 'G-NWCJE79RMP',
   );
 
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:42243577128:android:5385c7a65f648b1c39ec1d',
     messagingSenderId: '42243577128',
     projectId: 'tawazon-69d9b',
-    storageBucket: 'tawazon-69d9b.firebasestorage.app',
+    storageBucket: 'tawazon-69d9b.firebasestorage.shared',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:42243577128:ios:dc9ea71003b32c4339ec1d',
     messagingSenderId: '42243577128',
     projectId: 'tawazon-69d9b',
-    storageBucket: 'tawazon-69d9b.firebasestorage.app',
+    storageBucket: 'tawazon-69d9b.firebasestorage.shared',
     iosBundleId: 'com.example.base',
   );
 
@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
     appId: '1:42243577128:ios:dc9ea71003b32c4339ec1d',
     messagingSenderId: '42243577128',
     projectId: 'tawazon-69d9b',
-    storageBucket: 'tawazon-69d9b.firebasestorage.app',
+    storageBucket: 'tawazon-69d9b.firebasestorage.shared',
     iosBundleId: 'com.example.base',
   );
 
@@ -82,7 +82,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '42243577128',
     projectId: 'tawazon-69d9b',
     authDomain: 'tawazon-69d9b.firebaseapp.com',
-    storageBucket: 'tawazon-69d9b.firebasestorage.app',
+    storageBucket: 'tawazon-69d9b.firebasestorage.shared',
     measurementId: 'G-XMTYYZDVJQ',
   );
 }

@@ -1,23 +1,35 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/app_events.dart';
 import '../../../../config/app_states.dart';
+import '../../../../handlers/audio_player_handler.dart';
 import '../../core/entities/session_entity.dart';
 import '../../core/usecases/get_session.dart';
 import '../../core/usecases/complete_session_step.dart';
+import '../../core/usecases/complete_session.dart';
 
 /// BLoC for managing session state and navigation
 class SessionBloc extends Bloc<AppEvents, AppStates> {
   final GetSession _getSession;
   final CompleteSessionStep _completeSessionStep;
+  final CompleteSession _completeSession;
 
-  SessionBloc()
-      : _getSession = GetSession(),
-        _completeSessionStep = CompleteSessionStep(),
+  // Cache user inputs per step: { stepId: { contentItemId: value } }
+  final Map<String, Map<String, dynamic>> _stepInputs = {};
+  // Accumulated inputs for entire session (all steps): { contentItemId: value }
+  final Map<String, dynamic> _sessionInputs = {};
+
+  SessionBloc({
+    GetSession? getSession,
+    CompleteSessionStep? completeSessionStep,
+    CompleteSession? completeSession,
+  })  : _getSession = getSession ?? GetSession(),
+        _completeSessionStep = completeSessionStep ?? CompleteSessionStep(),
+        _completeSession = completeSession ?? CompleteSession(),
         super(InitialState()) {
     on<_SessionLoadEvent>(_onLoadSession);
-    on<_SessionNavigateEvent>(_onNavigateToStep);
     on<_SessionNextStepEvent>(_onNextStep);
     on<_SessionPreviousStepEvent>(_onPreviousStep);
+    on<_SessionCompleteEvent>(_onCompleteSession);
   }
 
   // Public methods to interact with the BLoC
@@ -26,16 +38,16 @@ class SessionBloc extends Bloc<AppEvents, AppStates> {
     add(_SessionLoadEvent(sessionId, completedScreenCount));
   }
 
-  void navigateToStep(int stepIndex) {
-    add(_SessionNavigateEvent(stepIndex));
-  }
-
   void nextStep() {
     add(_SessionNextStepEvent());
   }
 
   void previousStep() {
     add(_SessionPreviousStepEvent());
+  }
+
+  void completeSession() {
+    add(_SessionCompleteEvent());
   }
   //===================================================================
 
@@ -46,29 +58,12 @@ class SessionBloc extends Bloc<AppEvents, AppStates> {
         await _getSession(event.sessionId, event.completedScreenCount);
     result.fold(
       (failure) => emit(ErrorState(failure.message)),
-      (session) => emit(_SessionLoadedState(session)),
+      (session) {
+        _stepInputs.clear();
+        _sessionInputs.clear();
+        emit(_SessionLoadedState(session));
+      },
     );
-  }
-
-  void _onNavigateToStep(
-      _SessionNavigateEvent event, Emitter<AppStates> emit) async {
-    if (state is! _SessionLoadedState) return;
-
-    final currentState = state as _SessionLoadedState;
-    final session = currentState.session;
-
-    // Simply update the current step without using repository
-    final updatedSession = SessionEntity(
-      id: session.id,
-      title: session.title,
-      description: session.description,
-      steps: session.steps,
-      currentStep: event.stepIndex,
-      status: session.status,
-      createdAt: session.createdAt,
-    );
-
-    emit(_SessionLoadedState(updatedSession));
   }
 
   void _onNextStep(_SessionNextStepEvent event, Emitter<AppStates> emit) async {
@@ -83,27 +78,27 @@ class SessionBloc extends Bloc<AppEvents, AppStates> {
     }
 
     // First complete the current step using local session state
+    final currentStep = session.steps[session.currentStep];
+    final inputs = Map<String, dynamic>.from(
+      _stepInputs[currentStep.id] ?? const {},
+    );
+    // Merge into session-level inputs so 'quiz' contains all steps
+    _sessionInputs.addAll(inputs);
+    if(!session.steps[session.currentStep].isCompleted){
+      AudioPlayerHandler().playSound("audio/click_sound.wav");
+    }
     final completeResult = _completeSessionStep.call(
       sessionEntity: session,
       stepIndex: session.currentStep,
     );
-    
 
     // Then move to next step
     completeResult.fold(
       (failure) => emit(ErrorState(failure.message)),
       (updatedSession) {
-        final nextStep = updatedSession.currentStep + 1;
-        final finalSession = SessionEntity(
-          id: updatedSession.id,
-          title: updatedSession.title,
-          description: updatedSession.description,
-          steps: updatedSession.steps,
-          currentStep: nextStep,
-          status: updatedSession.status,
-          createdAt: updatedSession.createdAt,
-        );
-        emit(_SessionLoadedState(finalSession));
+        // Optionally clear inputs for the completed step
+        _stepInputs.remove(currentStep.id);
+        emit(_SessionLoadedState(updatedSession));
       },
     );
   }
@@ -133,12 +128,53 @@ class SessionBloc extends Bloc<AppEvents, AppStates> {
     emit(_SessionLoadedState(updatedSession));
   }
 
+  Future<void> _onCompleteSession(
+      _SessionCompleteEvent event, Emitter<AppStates> emit) async {
+    if (state is! _SessionLoadedState) return;
+
+    final currentState = state as _SessionLoadedState;
+    final session = currentState.session;
+
+    // Before completing the session, make sure the last step inputs are included in 'quiz'
+    final currentStep = session.steps[session.currentStep];
+    final lastStepInputs = Map<String, dynamic>.from(
+      _stepInputs[currentStep.id] ?? const {},
+    );
+    _sessionInputs.addAll(lastStepInputs);
+
+    emit(LoadingState());
+    final result = await _completeSession.call(
+      session: session,
+      inputs: Map<String, dynamic>.from(_sessionInputs),
+    );
+    result.fold(
+      (failure) => emit(ErrorState(failure.message)),
+      (updated) {
+        AudioPlayerHandler().playSound("audio/click_sound.wav");
+        emit(SessionCompletedState(updated));
+      },
+    );
+  }
+
   // Getter to access session data from the current state
   SessionEntity? get currentSession {
     if (state is _SessionLoadedState) {
       return (state as _SessionLoadedState).session;
     }
     return null;
+  }
+
+  //================ Input caching ===================
+
+  void setInput(String stepId, String contentItemId, dynamic value) {
+    final stepMap = _stepInputs.putIfAbsent(stepId, () => <String, dynamic>{});
+    stepMap[contentItemId] = value;
+    // Also write-through to session-level aggregate so we maintain the full 'quiz'
+    _sessionInputs[contentItemId] = value;
+  }
+
+  Map<String, dynamic> inputsForStep(String stepId) {
+    return Map<String, dynamic>.from(_stepInputs[stepId] ?? const {});
   }
 }
 
@@ -149,11 +185,6 @@ class _SessionLoadEvent extends AppEvents {
   _SessionLoadEvent(this.sessionId, this.completedScreenCount);
 }
 
-class _SessionNavigateEvent extends AppEvents {
-  final int stepIndex;
-  _SessionNavigateEvent(this.stepIndex);
-}
-
 class _SessionNextStepEvent extends AppEvents {
   _SessionNextStepEvent();
 }
@@ -162,8 +193,17 @@ class _SessionPreviousStepEvent extends AppEvents {
   _SessionPreviousStepEvent();
 }
 
+class _SessionCompleteEvent extends AppEvents {
+  _SessionCompleteEvent();
+}
+
 /// Session-specific states (private to this file)
 class _SessionLoadedState extends AppStates {
   final SessionEntity session;
   _SessionLoadedState(this.session);
+}
+
+class SessionCompletedState extends AppStates {
+  final SessionEntity session;
+  SessionCompletedState(this.session);
 }

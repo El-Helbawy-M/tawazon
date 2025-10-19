@@ -1,4 +1,4 @@
-import 'package:base/features/complete_profile/core/models/survey_question.dart';
+import 'package:tawazon/features/complete_profile/core/models/survey_question.dart';
 
 
 class SurveysSubmissionParams {

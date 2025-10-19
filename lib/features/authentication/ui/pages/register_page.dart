@@ -1,12 +1,10 @@
-import 'package:base/app/widgets/cancel_keyboard_gesture.dart';
-import 'package:base/app/widgets/cashed_network_image.dart';
-import 'package:base/app/widgets/fields/text_input_field.dart';
-import 'package:base/config/app_events.dart';
-import 'package:base/config/app_persistence_data_keys.dart';
-import 'package:base/config/app_states.dart';
-import 'package:base/config/app_translation_keys.dart';
-import 'package:base/handlers/translation_handler.dart';
-import 'package:base/utility/extensions/context_extensions.dart';
+import 'package:tawazon/shared/widgets/cancel_keyboard_gesture.dart';
+import 'package:tawazon/shared/widgets/fields/text_input_field.dart';
+import 'package:tawazon/config/app_events.dart';
+import 'package:tawazon/config/app_states.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
+import 'package:tawazon/utility/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,13 +44,12 @@ class RegisterPage extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("Registered Successfully"),
-                        content: const Text(
-                            "An email has been sent to your email address with instructions to Verify your email."),
+                        title: Text(translator.word(TranslationKeys.registeredSuccessfullyTitle)),
+                        content: Text(translator.word(TranslationKeys.registeredSuccessfullyBody)),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text("Ok")),
+                              child: Text(translator.word(TranslationKeys.ok))),
                         ],
                       );
                     },

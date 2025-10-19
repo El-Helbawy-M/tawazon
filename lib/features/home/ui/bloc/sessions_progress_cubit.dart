@@ -1,16 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../core/entities/sessions_overall_progress_entity.dart';
 import '../../core/usecases/get_sessions_overall_progress.dart';
 import '../../../../config/app_states.dart';
 
 /// Cubit for managing sessions overall progress state
-/// 
+///
 /// This cubit handles the state management for user sessions progress data.
 /// It uses the GetSessionsOverallProgress use case to fetch data from Firestore.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// final cubit = SessionsProgressCubit();
@@ -20,18 +19,19 @@ class SessionsProgressCubit extends Cubit<AppStates> {
   final GetSessionsOverallProgress _getSessionsOverallProgress;
 
   /// Creates an instance of [SessionsProgressCubit].
-  /// 
+  ///
   /// [getSessionsOverallProgress] The use case for fetching sessions progress data.
   /// If not provided, a default instance will be created.
   SessionsProgressCubit({
     GetSessionsOverallProgress? getSessionsOverallProgress,
-  })  : _getSessionsOverallProgress = getSessionsOverallProgress ?? GetSessionsOverallProgress(),
+  })  : _getSessionsOverallProgress =
+            getSessionsOverallProgress ?? GetSessionsOverallProgress(),
         super(InitialState());
 
   /// Loads user progress data for the given user ID
-  /// 
+  ///
   /// [userId] The unique identifier for the user
-  /// 
+  ///
   /// Emits [LoadingState] while fetching data,
   /// then either [LoadedState] on success or [ErrorState] on failure.
   Future<void> loadUserProgress(String userId) async {
@@ -41,7 +41,6 @@ class SessionsProgressCubit extends Cubit<AppStates> {
     }
 
     emit(LoadingState(type: 'sessions_progress'));
-
     final result = await _getSessionsOverallProgress.call(userId: userId);
 
     result.fold(
@@ -51,9 +50,9 @@ class SessionsProgressCubit extends Cubit<AppStates> {
   }
 
   /// Refreshes the user progress data
-  /// 
+  ///
   /// [userId] The unique identifier for the user
-  /// 
+  ///
   /// This method can be called to refresh the data without showing loading state
   /// if data is already loaded, or with loading state if no data is currently loaded.
   Future<void> refreshUserProgress(String userId) async {
@@ -76,7 +75,7 @@ class SessionsProgressCubit extends Cubit<AppStates> {
   }
 
   /// Gets the current progress data if available
-  /// 
+  ///
   /// Returns the [SessionsOverallProgressEntity] if the current state is [LoadedState],
   /// otherwise returns null.
   SessionsOverallProgressEntity? get currentProgressData {
@@ -103,5 +102,18 @@ class SessionsProgressCubit extends Cubit<AppStates> {
       return currentState.errorMessage;
     }
     return null;
+  }
+
+  /// Returns true if all sessions are completed, otherwise false.
+  ///
+  /// Uses the loaded `SessionsOverallProgressEntity` and checks the status
+  /// of each session. If there is no loaded data or there are no sessions,
+  /// this returns false.
+  bool get areAllSessionsCompleted {
+    final data = currentProgressData;
+    if (data == null) return false;
+    if (data.sessions.isEmpty) return false;
+    return data.sessions.values
+        .every((session) => session.status == 'completed');
   }
 }

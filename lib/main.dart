@@ -1,11 +1,10 @@
-import 'package:base/app/bloc/settings_cubit.dart';
-import 'package:base/app/bloc/user_cubit.dart';
-import 'package:base/config/app_states.dart';
-import 'package:base/handlers/security/AESEncryptor.dart';
-import 'package:base/handlers/shared_handler.dart';
-import 'package:base/mcp_case.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tawazon/shared/bloc/settings_cubit.dart';
+import 'package:tawazon/shared/bloc/user_cubit.dart';
+import 'package:tawazon/config/app_states.dart';
+import 'package:tawazon/handlers/security/AESEncryptor.dart';
+import 'package:tawazon/handlers/shared_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,11 +17,23 @@ import 'utility/style/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
-  SharedPrefHandler.init();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await SharedPrefHandler.init();
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } else {
+      Firebase.app();
+    }
+  } on FirebaseException catch (e) {
+    // Ignore duplicate app error and use the existing default app
+    if (e.code == 'duplicate-app' || e.message?.contains('duplicate-app') == true) {
+      Firebase.app();
+    } else {
+      rethrow;
+    }
+  }
   FirebaseFirestore.setLoggingEnabled(true);
   AESEncryptor.init();
   runApp(const MyApp());
@@ -44,9 +55,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: SettingsCubit.instance.isDarkMode ? darkTheme : lightTheme,
             locale: SettingsCubit.instance.locale,
-            // onGenerateRoute: generateRoute,
-            // initialRoute: AppRoutes.splash,
-            home: const FigmaUIScreen(),
+            onGenerateRoute: generateRoute,
+            initialRoute: AppRoutes.splash,
             supportedLocales: const [
               Locale('ar'),
               Locale('en'),

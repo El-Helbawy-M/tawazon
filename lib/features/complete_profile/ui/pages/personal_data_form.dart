@@ -1,13 +1,13 @@
-import 'package:base/app/widgets/fields/text_input_field.dart';
-import 'package:base/config/app_translation_keys.dart';
-import 'package:base/handlers/translation_handler.dart';
+import 'package:tawazon/shared/widgets/fields/text_input_field.dart';
+import 'package:tawazon/config/app_translation_keys.dart';
+import 'package:tawazon/handlers/translation_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/models/select_option.dart';
-import '../../../../app/widgets/fields/radio_input_field.dart';
-import '../../../../app/widgets/fields/single_select_input_field.dart';
+import '../../../../shared/models/select_option.dart';
+import '../../../../shared/widgets/fields/radio_input_field.dart';
+import '../../../../shared/widgets/fields/single_select_input_field.dart';
 import '../blocs/survey_forms_bloc.dart';
 
 class PersonalDataForm extends StatelessWidget {

@@ -5,11 +5,11 @@ import '../../../../config/app_errors.dart';
 import '../../../../config/firestore_tables.dart';
 
 /// A use case class for creating user progress documents in Firebase Firestore.
-/// 
+///
 /// This class handles the creation of initial user progress documents
 /// when a user registers for the first time. The document contains
 /// session progress tracking, quiz results, and overall progress metrics.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// final createUserProgress = CreateUserProgress();
@@ -19,19 +19,19 @@ class CreateUserProgress {
   final FirebaseFirestore _firestore;
 
   /// Creates an instance of [CreateUserProgress].
-  /// 
+  ///
   /// [firestore] The Firestore instance to use. Defaults to the default instance.
-  CreateUserProgress({FirebaseFirestore? firestore}) 
+  CreateUserProgress({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
   /// Creates a user progress document in the 'user_progress' collection.
-  /// 
+  ///
   /// [userId] The unique identifier for the user. This will be used as the document ID.
-  /// 
+  ///
   /// Returns [Either<Failure, bool>] where:
   /// - Left side contains a [Failure] if the operation fails
   /// - Right side contains [true] if the document was created successfully
-  /// 
+  ///
   /// Throws [ValidationFailure] if userId is empty or null.
   /// Throws [ServerFailure] if Firestore operation fails.
   /// Throws [UnknownFailure] for unexpected errors.
@@ -53,16 +53,18 @@ class CreateUserProgress {
 
       return const Right(true);
     } on FirebaseException catch (e) {
-      return Left(ServerFailure('Failed to create user progress: ${e.message}'));
+      return Left(
+          ServerFailure('Failed to create user progress: ${e.message}'));
     } catch (e) {
-      return Left(UnknownFailure('Unexpected error occurred while creating user progress'));
+      return Left(UnknownFailure(
+          'Unexpected error occurred while creating user progress'));
     }
   }
 
   /// Creates the initial user progress document structure.
-  /// 
+  ///
   /// [userId] The user ID to include in the document.
-  /// 
+  ///
   /// Returns a [Map<String, dynamic>] representing the initial document structure.
   Map<String, dynamic> _createInitialUserProgressData(String userId) {
     final now = Timestamp.now();
@@ -73,7 +75,7 @@ class CreateUserProgress {
           'sessionId': 'session_1',
           'sessionName': 'المشاعر',
           'screenProgress': {
-            'totalScreens': 7,
+            'totalScreens': 8,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -84,9 +86,9 @@ class CreateUserProgress {
         },
         'session_2': {
           'sessionId': 'session_2',
-          'sessionName': 'Understanding Anxiety',
+          'sessionName': 'توضيح لبعض الخرافات عن المشاعر وتعريف بالحقائق',
           'screenProgress': {
-            'totalScreens': null,
+            'totalScreens': 2,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -99,7 +101,7 @@ class CreateUserProgress {
           'sessionId': 'session_3',
           'sessionName': 'Coping with Depression',
           'screenProgress': {
-            'totalScreens': null,
+            'totalScreens': 3,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -112,7 +114,7 @@ class CreateUserProgress {
           'sessionId': 'session_4',
           'sessionName': 'Stress Management Techniques',
           'screenProgress': {
-            'totalScreens': null,
+            'totalScreens': 4,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -125,7 +127,7 @@ class CreateUserProgress {
           'sessionId': 'session_5',
           'sessionName': 'Building Resilience',
           'screenProgress': {
-            'totalScreens': null,
+            'totalScreens': 5,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -138,33 +140,7 @@ class CreateUserProgress {
           'sessionId': 'session_6',
           'sessionName': 'Mindfulness and Meditation',
           'screenProgress': {
-            'totalScreens': null,
-            'completedScreens': 0,
-            'completedScreenIds': <String>[],
-            'lastCompletedAt': null,
-            'startedAt': null,
-          },
-          'quiz': <String, dynamic>{},
-          'status': 'not_started',
-        },
-        'session_7': {
-          'sessionId': 'session_7',
-          'sessionName': 'Healthy Relationships',
-          'screenProgress': {
-            'totalScreens': null,
-            'completedScreens': 0,
-            'completedScreenIds': <String>[],
-            'lastCompletedAt': null,
-            'startedAt': null,
-          },
-          'quiz': <String, dynamic>{},
-          'status': 'not_started',
-        },
-        'session_8': {
-          'sessionId': 'session_8',
-          'sessionName': 'Maintaining Mental Wellness',
-          'screenProgress': {
-            'totalScreens': null,
+            'totalScreens': 6,
             'completedScreens': 0,
             'completedScreenIds': <String>[],
             'lastCompletedAt': null,
@@ -175,7 +151,8 @@ class CreateUserProgress {
         },
       },
       'overallProgress': {
-        'totalSessions': 8, // This should be configured based on your app's total sessions
+        'totalSessions':
+            8, // This should be configured based on your app's total sessions
         'completedSessions': 0,
         'inProgressSessions': 0,
         'lastActivity': now,

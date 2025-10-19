@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import '../../core/entities/session_entity.dart';
 import '../../core/entities/session_step_entity.dart';
 import '../../../../utility/style/app_colors.dart';
-import 'content_item_widgets.dart';
+import 'content_item_widgets/content_item_widgets.dart';
 
 /// Widget that displays the content for the current session step
 class SessionStepContent extends StatelessWidget {
   final SessionEntity session;
   final int currentStep;
+  final GlobalKey<FormState>? formKey;
 
   const SessionStepContent({
     Key? key,
     required this.session,
     required this.currentStep,
+    this.formKey,
   }) : super(key: key);
 
   @override
@@ -24,33 +26,35 @@ class SessionStepContent extends StatelessWidget {
     }
 
     final step = session.steps[currentStep];
-    
-    return SingleChildScrollView(
+
+    return Form(
+      key: formKey,
+      child: SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Step type indicator
           _StepTypeIndicator(stepType: step.type),
-          
+
           const SizedBox(height: 16),
-          
+
           // Step title
           Text(
             step.title,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Step content based on type
           _buildStepContent(step),
-          
+
           const SizedBox(height: 24),
-          
+
           // Completion status
           if (step.isCompleted)
             Container(
@@ -58,7 +62,8 @@ class SessionStepContent extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.successColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.successColor.withValues(alpha: 0.3)),
+                border: Border.all(
+                    color: AppColors.successColor.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
@@ -80,6 +85,7 @@ class SessionStepContent extends StatelessWidget {
             ),
         ],
       ),
+    ),
     );
   }
 
@@ -88,9 +94,9 @@ class SessionStepContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Render all content items in sequence
-        ...step.contentItems.map((contentItem) => 
-          ContentItemWidget(contentItem: contentItem)
-        ).toList(),
+        ...step.contentItems
+            .map((contentItem) => ContentItemWidget(stepId: step.id, contentItem: contentItem))
+            .toList(),
       ],
     );
   }
@@ -124,6 +130,11 @@ class _StepTypeIndicator extends StatelessWidget {
         label = 'ملخص';
         color = Colors.indigo;
         break;
+      case SessionStepType.quiz:
+        icon = Icons.quiz;
+        label = 'اختبار';
+        color = Colors.orange;
+        break;
       case SessionStepType.conclusion:
         icon = Icons.flag;
         label = 'خاتمة';
@@ -156,6 +167,3 @@ class _StepTypeIndicator extends StatelessWidget {
     );
   }
 }
-
-
-

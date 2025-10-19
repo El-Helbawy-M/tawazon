@@ -1,15 +1,15 @@
 import 'dart:developer';
 
-import 'package:base/app/bloc/user_cubit.dart';
-import 'package:base/config/app_states.dart';
-import 'package:base/features/complete_profile/core/models/complete_profile_submission_params.dart';
-import 'package:base/features/complete_profile/core/models/surveys_submission_params.dart';
-import 'package:base/features/complete_profile/core/repo/complete_profile_repo_interface.dart';
+import 'package:tawazon/shared/bloc/user_cubit.dart';
+import 'package:tawazon/config/app_states.dart';
+import 'package:tawazon/features/complete_profile/core/models/complete_profile_submission_params.dart';
+import 'package:tawazon/features/complete_profile/core/models/surveys_submission_params.dart';
+import 'package:tawazon/features/complete_profile/core/repo/complete_profile_repo_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/models/select_option.dart';
+import '../../../../shared/models/select_option.dart';
 import '../../../../core/validations.dart';
 import '../../core/models/survey_form.dart';
 
