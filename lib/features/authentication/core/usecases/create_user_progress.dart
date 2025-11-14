@@ -99,7 +99,7 @@ class CreateUserProgress {
         },
         'session_3': {
           'sessionId': 'session_3',
-          'sessionName': 'Coping with Depression',
+          'sessionName': 'تعريف بحالات العقل',
           'screenProgress': {
             'totalScreens': 3,
             'completedScreens': 0,
@@ -112,7 +112,7 @@ class CreateUserProgress {
         },
         'session_4': {
           'sessionId': 'session_4',
-          'sessionName': 'Stress Management Techniques',
+          'sessionName': 'مهارات تقليل الحساسية للعقل العاطفي',
           'screenProgress': {
             'totalScreens': 4,
             'completedScreens': 0,
@@ -125,7 +125,7 @@ class CreateUserProgress {
         },
         'session_5': {
           'sessionId': 'session_5',
-          'sessionName': 'Building Resilience',
+          'sessionName': 'مهارة تغيير ردود الأفعال العاطفية',
           'screenProgress': {
             'totalScreens': 5,
             'completedScreens': 0,
@@ -138,7 +138,7 @@ class CreateUserProgress {
         },
         'session_6': {
           'sessionId': 'session_6',
-          'sessionName': 'Mindfulness and Meditation',
+          'sessionName': 'مهارات التعامل مع المشاعر الصعبة',
           'screenProgress': {
             'totalScreens': 6,
             'completedScreens': 0,

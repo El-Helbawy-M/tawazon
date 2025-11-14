@@ -58,9 +58,9 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
     SharedPrefHandler.instance!.save(AppPersistenceDataKeys.isLogin, value: true);
   }
 
-  void _onLoginSuccess(UserCredential userCredential) async{
-    _cashUser(userCredential.user!.uid);
-    UserCubit.instance.getUseData(userCredential.user!.uid);
+  Future<void> _onLoginSuccess(UserCredential userCredential) async {
+    await _cashUser(userCredential.user!.uid);
+    await UserCubit.instance.getUseData(userCredential.user!.uid);
   }
 
 
@@ -78,7 +78,7 @@ class LoginBloc extends Bloc<AppEvents, AppStates> with Validations {
     emit(LoadingState());
     try {
       UserCredential userCredential = await _loginRequest();
-      _onLoginSuccess(userCredential);
+      await _onLoginSuccess(userCredential);
       emit(LoadedState(userCredential));
     } catch (e) {
       emit(ErrorState(e.toString()));

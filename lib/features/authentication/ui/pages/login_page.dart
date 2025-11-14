@@ -29,7 +29,10 @@ class LoginPage extends StatelessWidget {
             if (newState is LoadedState) {
               context.showSnackBar(Colors.green, "Login successful");
               Navigator.pushNamedAndRemoveUntil(
-                  context, AppRoutes.home, (route) => false);
+                context,
+                AppRoutes.home,
+                (route) => false,
+              );
             }
           },
           builder: (context, state) {

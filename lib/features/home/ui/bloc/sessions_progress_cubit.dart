@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/entities/sessions_overall_progress_entity.dart';

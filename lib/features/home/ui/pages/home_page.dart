@@ -143,6 +143,7 @@ class _HomePageState extends State<HomePage> {
                     return ListView.separated(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
+                        vertical: 16
                       ),
                       itemCount: sessionsList.length,
                       itemBuilder: (context, index) {
