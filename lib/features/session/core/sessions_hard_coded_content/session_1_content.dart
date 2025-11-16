@@ -113,6 +113,10 @@ final session1steps = [
 عندما تفكر في هذا الشعور ...بماذا تعشر في جسدك (خفة.....ثقل....اختناق....ضربات قلب سريعه....رعشة يدين....جسد مرتاح)
 ''',
       ),
+      ContentItemEntity.image(
+        id: 'content_image_2',
+        imageUrl: 'assets/images/session_1_image_6_screen_7.jpg',
+      ),
     ],
     type: SessionStepType.conclusion,
     isCompleted: false,

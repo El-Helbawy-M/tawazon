@@ -69,12 +69,12 @@ final session6steps = [
   ),
   SessionStepEntity(
     id: 'step_6',
-    title: 'مهارة تغيير الاستجابات الجسدية) 💧🏃‍♀️',
+    title: '(مهارة تغيير الاستجابات الجسدية) 💧🏃‍♀️',
     contentItems: [
       ContentItemEntity.text(
         id: 'item_1',
         content:
-            "اقبلبرّد جسمك (ماء بارد)، مارس تمرين تنفس، أو جري سريع. تغيير الجسم يغيّر العاطفة.",
+            "برّد جسمك (ماء بارد)، مارس تمرين تنفس، أو جري سريع. تغيير الجسم يغيّر العاطفة.",
       ),
     ],
     type: SessionStepType.summary,
